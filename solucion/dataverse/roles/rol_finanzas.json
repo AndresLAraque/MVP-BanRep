@@ -1,0 +1,28 @@
+{
+  "rol": "Finanzas (Viaticos)",
+  "descripcion": "Rol para la gestion de pagos e integracion con SAP.",
+  "privilegios": [
+    {
+      "tabla": "crb_pagos",
+      "niveles": {
+        "Create": "Global",
+        "Read": "Global",
+        "Write": "Global"
+      }
+    },
+    {
+      "tabla": "crb_sap_instruccion_pago",
+      "niveles": {
+        "Create": "Global",
+        "Read": "Global"
+      }
+    },
+    {
+      "tabla": "crb_sap_confirmacion_pago",
+      "niveles": {
+        "Read": "Global",
+        "Write": "Global"
+      }
+    }
+  ]
+}

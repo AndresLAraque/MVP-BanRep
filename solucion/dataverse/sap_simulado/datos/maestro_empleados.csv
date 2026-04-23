@@ -1,0 +1,7 @@
+crb_numero_empleado,crb_nombre_completo,crb_centro_costo,crb_sociedad,crb_cuenta_bancaria,crb_email_corporativo
+1001,Andres Lopez,CC001,1000,12345678,alopez@banrep.gov.co
+1002,Maria Garcia,CC001,1000,87654321,mgarcia@banrep.gov.co
+1003,Carlos Perez,CC002,1000,13572468,cperez@banrep.gov.co
+1004,Ana Rodriguez,CC002,1000,24681357,arodriguez@banrep.gov.co
+2001,Jefe Operaciones,CC001,1000,99999999,joperaciones@banrep.gov.co
+3001,Admin GH,CC999,1000,00000000,agh@banrep.gov.co

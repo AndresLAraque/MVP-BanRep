@@ -1,0 +1,66 @@
+{
+  "tabla": "crb_detalle_gastos",
+  "nombre_display": "Detalle de Gastos",
+  "nombre_plural": "Detalles de Gastos",
+  "descripcion": "Desglose obligatorio de gastos por categoria. Requerido por Art. 130 CST para determinar incidencia salarial.",
+  "clave_primaria": "crb_detallegastoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_detallegastoid",
+      "nombre_display": "Detalle Gasto ID",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_solicitud",
+      "nombre_display": "Solicitud",
+      "tipo": "Lookup",
+      "tabla_referencia": "crb_solicitudes",
+      "requerido": true,
+      "comportamiento_eliminacion": "Cascade",
+      "descripcion": "Referencia a la solicitud padre"
+    },
+    {
+      "nombre_logico": "crb_categoria_gasto",
+      "nombre_display": "Categoria de Gasto",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "Hospedaje"},
+        {"valor": 100000001, "etiqueta": "Alimentacion"},
+        {"valor": 100000002, "etiqueta": "Transporte"},
+        {"valor": 100000003, "etiqueta": "Gastos de Representacion"},
+        {"valor": 100000004, "etiqueta": "Otro"}
+      ],
+      "requerido": true,
+      "descripcion": "Categoria del gasto segun clasificacion del Art. 130 CST"
+    },
+    {
+      "nombre_logico": "crb_monto",
+      "nombre_display": "Monto",
+      "tipo": "Currency",
+      "precision": 2,
+      "min": 0,
+      "requerido": true,
+      "descripcion": "Monto estimado para esta categoria"
+    },
+    {
+      "nombre_logico": "crb_constituye_salario",
+      "nombre_display": "Constituye Salario",
+      "tipo": "TwoOption",
+      "etiqueta_si": "Si",
+      "etiqueta_no": "No",
+      "calculado": true,
+      "formula": "IF(solicitud.crb_tipo_viatico == 'Permanente' AND (crb_categoria_gasto == 'Hospedaje' OR crb_categoria_gasto == 'Alimentacion'), true, false)",
+      "descripcion": "Se calcula automaticamente segun tipo de viatico y categoria. Art. 130 CST"
+    },
+    {
+      "nombre_logico": "crb_descripcion",
+      "nombre_display": "Descripcion",
+      "tipo": "MultiLineText",
+      "longitud_maxima": 500,
+      "requerido": false,
+      "descripcion": "Detalle adicional del gasto"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "tabla": "crb_sap_confirmacion_pago",
+  "nombre_display": "SAP: Confirmacion de Pago",
+  "nombre_plural": "SAP: Confirmaciones de Pago",
+  "descripcion": "Tabla que simula la recepcion de confirmaciones de pago desde SAP (REGUP).",
+  "clave_primaria": "crb_sapconfirmacionpagoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_sapconfirmacionpagoid",
+      "nombre_display": "ID Confirmacion Pago",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_referencia_pago",
+      "nombre_display": "Referencia de Pago",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 50,
+      "requerido": true,
+      "descripcion": "Corresponde al ID Transaccion enviado originalmente"
+    },
+    {
+      "nombre_logico": "crb_estado",
+      "nombre_display": "Estado SAP",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 20,
+      "requerido": true,
+      "descripcion": "Estado retornado por SAP (PAGADO, ERROR, PENDIENTE)"
+    },
+    {
+      "nombre_logico": "crb_fecha_ejecucion",
+      "nombre_display": "Fecha de Ejecucion",
+      "tipo": "DateTime",
+      "formato": "DateTime",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_banco",
+      "nombre_display": "Banco Pagador",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 100
+    },
+    {
+      "nombre_logico": "crb_cuenta",
+      "nombre_display": "Cuenta Pagadora",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 50
+    },
+    {
+      "nombre_logico": "crb_monto_ejecutado",
+      "nombre_display": "Monto Ejecutado",
+      "tipo": "Currency",
+      "precision": 2,
+      "requerido": true
+    }
+  ]
+}

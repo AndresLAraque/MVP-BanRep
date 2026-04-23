@@ -1,0 +1,19 @@
+{
+  "tabla": "crb_pagos",
+  "nombre_display": "Pagos",
+  "nombre_plural": "Pagos",
+  "descripcion": "Registro de instrucciones de pago enviadas a SAP y su confirmacion.",
+  "clave_primaria": "crb_pagoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {"nombre_logico": "crb_pagoid", "nombre_display": "Pago ID", "tipo": "Uniqueidentifier", "requerido": true},
+    {"nombre_logico": "crb_solicitud", "nombre_display": "Solicitud", "tipo": "Lookup", "tabla_referencia": "crb_solicitudes", "requerido": true, "comportamiento_eliminacion": "Restrict"},
+    {"nombre_logico": "crb_monto_pagado", "nombre_display": "Monto Pagado", "tipo": "Currency", "precision": 2, "min": 0, "requerido": true},
+    {"nombre_logico": "crb_estado_pago", "nombre_display": "Estado del Pago", "tipo": "OptionSet", "opciones": [{"valor": 100000000, "etiqueta": "Pendiente"}, {"valor": 100000001, "etiqueta": "Enviado a SAP"}, {"valor": 100000002, "etiqueta": "Confirmado"}, {"valor": 100000003, "etiqueta": "Error"}], "requerido": true, "valor_defecto": 100000000},
+    {"nombre_logico": "crb_referencia_sap", "nombre_display": "Referencia SAP", "tipo": "SingleLineText", "longitud_maxima": 50, "descripcion": "Numero de documento contable en SAP"},
+    {"nombre_logico": "crb_id_transaccion", "nombre_display": "ID de Transaccion", "tipo": "SingleLineText", "longitud_maxima": 36, "requerido": true, "unico": true, "descripcion": "GUID unico para garantizar idempotencia"},
+    {"nombre_logico": "crb_medio_pago", "nombre_display": "Medio de Pago", "tipo": "OptionSet", "opciones": [{"valor": 100000000, "etiqueta": "Anticipo"}, {"valor": 100000001, "etiqueta": "Tarjeta Corporativa"}, {"valor": 100000002, "etiqueta": "Transferencia"}], "requerido": true},
+    {"nombre_logico": "crb_fecha_envio", "nombre_display": "Fecha de Envio", "tipo": "DateTime", "formato": "DateAndTime", "requerido": true},
+    {"nombre_logico": "crb_fecha_confirmacion", "nombre_display": "Fecha de Confirmacion", "tipo": "DateTime", "formato": "DateAndTime"}
+  ]
+}

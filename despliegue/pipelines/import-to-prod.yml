@@ -1,0 +1,39 @@
+# Pipeline: Desplegar a PRODUCCION
+# Disparador: Manual con aprobacion de entorno
+
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+- name: solutionName
+  value: 'ViaticosApp'
+- name: environmentConnection
+  value: 'PowerPlatform-Prod'
+
+jobs:
+- deployment: DeployProd
+  displayName: 'Despliegue a Produccion'
+  environment: 'Produccion' # Requiere que este ambiente este creado en ADO con Gate de aprobacion
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: microsoft-Iis6.Power Platform BuildTools.tool-installer.PowerPlatformToolInstaller@2
+          displayName: 'Power Platform Tool Installer'
+
+        - task: microsoft-Iis6.Power Platform BuildTools.pack-solution.PowerPlatformPackSolution@2
+          displayName: 'Empaquetar Solucion como Managed'
+          inputs:
+            SolutionSourceFolder: '$(Build.SourcesDirectory)\solucion\viaticos_app'
+            SolutionOutputFile: '$(Build.ArtifactStagingDirectory)\$(solutionName)_managed.zip'
+            SolutionType: 'Managed'
+
+        - task: microsoft-Iis6.Power Platform BuildTools.import-solution.PowerPlatformImportSolution@2
+          displayName: 'Importar a PRODUCCION'
+          inputs:
+            authenticationType: 'PowerPlatformSPN'
+            PowerPlatformSPN: '$(environmentConnection)'
+            SolutionInputFile: '$(Build.ArtifactStagingDirectory)\$(solutionName)_managed.zip'
+            PublishCustomizations: true

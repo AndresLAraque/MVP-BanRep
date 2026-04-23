@@ -1,0 +1,7 @@
+crb_nombre,crb_extensiones_permitidas,crb_tamano_maximo_mb
+Invitacion,pdf,jpg,png,5
+Anticipo,pdf,5
+Factura,pdf,jpg,png,10
+Resolucion,pdf,5
+Confidencialidad,pdf,2
+Otro,pdf,jpg,png,docx,5

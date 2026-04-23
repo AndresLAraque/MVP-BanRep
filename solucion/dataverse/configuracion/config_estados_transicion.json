@@ -1,0 +1,43 @@
+{
+  "tabla": "crb_config_estados_transicion",
+  "nombre_display": "Config: Transiciones de Estado",
+  "nombre_plural": "Config: Transiciones de Estado",
+  "descripcion": "Define las transiciones permitidas entre estados segun el rol del usuario.",
+  "clave_primaria": "crb_configestadotransicionid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_configestadotransicionid",
+      "nombre_display": "ID Transicion Estado",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_estado_origen",
+      "nombre_display": "Estado Origen",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 50,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_estado_destino",
+      "nombre_display": "Estado Destino",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 50,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_rol_ejecutor",
+      "nombre_display": "Rol Ejecutor",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "Empleado"},
+        {"valor": 100000001, "etiqueta": "Jefe"},
+        {"valor": 100000002, "etiqueta": "Gestion Humana"},
+        {"valor": 100000003, "etiqueta": "Finanzas"},
+        {"valor": 100000004, "etiqueta": "Sistema"}
+      ],
+      "requerido": true
+    }
+  ]
+}

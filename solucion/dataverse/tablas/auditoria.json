@@ -1,0 +1,17 @@
+{
+  "tabla": "crb_auditoria",
+  "nombre_display": "Auditoria",
+  "nombre_plural": "Auditoria",
+  "descripcion": "Registro inmutable de todos los eventos del sistema. Solo insercion, nunca se modifica ni elimina.",
+  "clave_primaria": "crb_auditoriaid",
+  "propietario": "Organizacion",
+  "permisos_especiales": "Solo lectura para todos los roles excepto el sistema. No permite Update ni Delete.",
+  "campos": [
+    {"nombre_logico": "crb_auditoriaid", "nombre_display": "Evento ID", "tipo": "Uniqueidentifier", "requerido": true},
+    {"nombre_logico": "crb_solicitud", "nombre_display": "Solicitud", "tipo": "Lookup", "tabla_referencia": "crb_solicitudes", "requerido": true, "comportamiento_eliminacion": "RemoveLink"},
+    {"nombre_logico": "crb_usuario", "nombre_display": "Usuario", "tipo": "Lookup", "tabla_referencia": "systemuser", "requerido": true, "descripcion": "Usuario que ejecuto la accion"},
+    {"nombre_logico": "crb_accion", "nombre_display": "Accion", "tipo": "OptionSet", "opciones": [{"valor": 100000000, "etiqueta": "Creacion"}, {"valor": 100000001, "etiqueta": "Edicion"}, {"valor": 100000002, "etiqueta": "Envio"}, {"valor": 100000003, "etiqueta": "Aprobacion"}, {"valor": 100000004, "etiqueta": "Rechazo"}, {"valor": 100000005, "etiqueta": "Envio a SAP"}, {"valor": 100000006, "etiqueta": "Pago Confirmado"}, {"valor": 100000007, "etiqueta": "Error de Pago"}, {"valor": 100000008, "etiqueta": "Cancelacion"}], "requerido": true},
+    {"nombre_logico": "crb_fecha_evento", "nombre_display": "Fecha del Evento", "tipo": "DateTime", "formato": "DateAndTime", "valor_defecto": "now()", "requerido": true},
+    {"nombre_logico": "crb_detalle", "nombre_display": "Detalle", "tipo": "MultiLineText", "longitud_maxima": 4000, "requerido": true, "descripcion": "Descripcion completa del cambio realizado"}
+  ]
+}

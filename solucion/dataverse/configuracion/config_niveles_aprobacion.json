@@ -1,0 +1,49 @@
+{
+  "tabla": "crb_config_niveles_aprobacion",
+  "nombre_display": "Config: Niveles de Aprobacion",
+  "nombre_plural": "Config: Niveles de Aprobacion",
+  "descripcion": "Define la jerarquia de aprobaciones requeridas para las solicitudes.",
+  "clave_primaria": "crb_confignivelaprobacionid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_confignivelaprobacionid",
+      "nombre_display": "ID Nivel Aprobacion",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_nivel",
+      "nombre_display": "Nivel",
+      "tipo": "WholeNumber",
+      "min": 1,
+      "max": 5,
+      "requerido": true,
+      "descripcion": "Orden secuencial de la aprobacion (1=Primero, 2=Segundo, etc.)"
+    },
+    {
+      "nombre_logico": "crb_rol_aprobador",
+      "nombre_display": "Rol Aprobador",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "Jefe Inmediato"},
+        {"valor": 100000001, "etiqueta": "Gestion Humana"},
+        {"valor": 100000002, "etiqueta": "Finanzas"},
+        {"valor": 100000003, "etiqueta": "Administrador"}
+      ],
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_descripcion",
+      "nombre_display": "Descripcion",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 200
+    },
+    {
+      "nombre_logico": "crb_activo",
+      "nombre_display": "Activo",
+      "tipo": "TwoOption",
+      "valor_defecto": true
+    }
+  ]
+}

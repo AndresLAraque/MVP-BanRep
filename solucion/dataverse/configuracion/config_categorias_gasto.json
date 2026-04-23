@@ -1,0 +1,39 @@
+{
+  "tabla": "crb_config_categorias_gasto",
+  "nombre_display": "Config: Categorias de Gasto",
+  "nombre_plural": "Config: Categorias de Gasto",
+  "descripcion": "Catalogo de categorias de gasto con sus reglas de incidencia salarial.",
+  "clave_primaria": "crb_configcategoriagastoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_configcategoriagastoid",
+      "nombre_display": "ID Categoria Gasto",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_nombre",
+      "nombre_display": "Nombre Categoria",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 100,
+      "requerido": true,
+      "descripcion": "Ej: Hospedaje, Alimentacion, Transporte"
+    },
+    {
+      "nombre_logico": "crb_constituye_salario_permanente",
+      "nombre_display": "Constituye Salario (Permanente)",
+      "tipo": "TwoOption",
+      "etiqueta_si": "Si",
+      "etiqueta_no": "No",
+      "valor_defecto": false,
+      "descripcion": "Indica si segun el Art. 130 CST esta categoria es base salarial cuando el viatico es permanente."
+    },
+    {
+      "nombre_logico": "crb_descripcion",
+      "nombre_display": "Descripcion",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 500
+    }
+  ]
+}

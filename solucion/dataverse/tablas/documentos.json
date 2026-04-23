@@ -1,0 +1,16 @@
+{
+  "tabla": "crb_documentos",
+  "nombre_display": "Documentos",
+  "nombre_plural": "Documentos",
+  "descripcion": "Archivos adjuntos vinculados a cada solicitud de viaticos.",
+  "clave_primaria": "crb_documentoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {"nombre_logico": "crb_documentoid", "nombre_display": "Documento ID", "tipo": "Uniqueidentifier", "requerido": true},
+    {"nombre_logico": "crb_solicitud", "nombre_display": "Solicitud", "tipo": "Lookup", "tabla_referencia": "crb_solicitudes", "requerido": true, "comportamiento_eliminacion": "Cascade"},
+    {"nombre_logico": "crb_nombre_archivo", "nombre_display": "Nombre del Archivo", "tipo": "SingleLineText", "longitud_maxima": 256, "requerido": true},
+    {"nombre_logico": "crb_tipo_documento", "nombre_display": "Tipo de Documento", "tipo": "OptionSet", "opciones": [{"valor": 100000000, "etiqueta": "Carta de Invitacion"}, {"valor": 100000001, "etiqueta": "Formato de Anticipo"}, {"valor": 100000002, "etiqueta": "Factura"}, {"valor": 100000003, "etiqueta": "Resolucion de Comision"}, {"valor": 100000004, "etiqueta": "Clausula de Confidencialidad"}, {"valor": 100000005, "etiqueta": "Otro"}], "requerido": true},
+    {"nombre_logico": "crb_archivo", "nombre_display": "Archivo Adjunto", "tipo": "File", "tamano_maximo_kb": 10240, "extensiones_permitidas": "pdf,jpg,jpeg,png,doc,docx,xls,xlsx", "descripcion": "Columna de archivo de Dataverse (sin SharePoint)"},
+    {"nombre_logico": "crb_fecha_carga", "nombre_display": "Fecha de Carga", "tipo": "DateTime", "formato": "DateAndTime", "valor_defecto": "now()", "requerido": true}
+  ]
+}

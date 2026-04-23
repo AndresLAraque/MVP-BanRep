@@ -1,0 +1,85 @@
+{
+  "tabla": "crb_sap_instruccion_pago",
+  "nombre_display": "SAP: Instruccion de Pago",
+  "nombre_plural": "SAP: Instrucciones de Pago",
+  "descripcion": "Tabla que simula el envio de instrucciones de pago a SAP S/4HANA (BKPF/BSEG).",
+  "clave_primaria": "crb_sapinstruccionpagoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_sapinstruccionpagoid",
+      "nombre_display": "ID Instruccion Pago",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_sociedad",
+      "nombre_display": "Sociedad",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 4,
+      "requerido": true,
+      "descripcion": "Codigo de la sociedad en SAP (ej: 1000)"
+    },
+    {
+      "nombre_logico": "crb_centro_costo",
+      "nombre_display": "Centro de Costo",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 10,
+      "requerido": true,
+      "descripcion": "Codigo del centro de costo"
+    },
+    {
+      "nombre_logico": "crb_numero_empleado",
+      "nombre_display": "Numero de Empleado",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 10,
+      "requerido": true,
+      "descripcion": "Numero de personal (PERNR) en SAP"
+    },
+    {
+      "nombre_logico": "crb_monto",
+      "nombre_display": "Monto",
+      "tipo": "Currency",
+      "precision": 2,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_moneda",
+      "nombre_display": "Moneda",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 3,
+      "requerido": true,
+      "descripcion": "Moneda ISO (COP, USD, EUR)"
+    },
+    {
+      "nombre_logico": "crb_concepto",
+      "nombre_display": "Concepto de Pago",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 50,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_fecha_valor",
+      "nombre_display": "Fecha Valor",
+      "tipo": "DateTime",
+      "formato": "DateOnly",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_id_transaccion",
+      "nombre_display": "ID Transaccion",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 50,
+      "requerido": true,
+      "descripcion": "ID unico para evitar duplicados en SAP"
+    },
+    {
+      "nombre_logico": "crb_medio_pago",
+      "nombre_display": "Medio de Pago",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 1,
+      "requerido": true,
+      "descripcion": "Codigo SAP del medio de pago (ej: E=Efectivo, T=Transferencia)"
+    }
+  ]
+}

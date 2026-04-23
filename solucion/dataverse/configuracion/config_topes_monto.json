@@ -1,0 +1,65 @@
+{
+  "tabla": "crb_config_topes_monto",
+  "nombre_display": "Config: Topes de Monto",
+  "nombre_plural": "Config: Topes de Monto",
+  "descripcion": "Define los limites maximos permitidos por tipo de destino y categoria de gasto.",
+  "clave_primaria": "crb_configtopemontoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_configtopemontoid",
+      "nombre_display": "ID Tope Monto",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_destino_tipo",
+      "nombre_display": "Tipo de Destino",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "Nacional - Ciudad Principal"},
+        {"valor": 100000001, "etiqueta": "Nacional - Ciudad Intermedia"},
+        {"valor": 100000002, "etiqueta": "Internacional - Norteamerica"},
+        {"valor": 100000003, "etiqueta": "Internacional - Europa"},
+        {"valor": 100000004, "etiqueta": "Internacional - Latam"}
+      ],
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_categoria_gasto",
+      "nombre_display": "Categoria de Gasto",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "Hospedaje"},
+        {"valor": 100000001, "etiqueta": "Alimentacion"},
+        {"valor": 100000002, "etiqueta": "Transporte"},
+        {"valor": 100000003, "etiqueta": "Gastos de Representacion"}
+      ],
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_moneda",
+      "nombre_display": "Moneda",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "COP"},
+        {"valor": 100000001, "etiqueta": "USD"},
+        {"valor": 100000002, "etiqueta": "EUR"}
+      ],
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_monto_maximo",
+      "nombre_display": "Monto Maximo",
+      "tipo": "Currency",
+      "precision": 2,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_activo",
+      "nombre_display": "Activo",
+      "tipo": "TwoOption",
+      "valor_defecto": true
+    }
+  ]
+}

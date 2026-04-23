@@ -1,0 +1,53 @@
+{
+  "tabla": "crb_sap_centros_costo",
+  "nombre_display": "SAP: Centros de Costo",
+  "nombre_plural": "SAP: Centros de Costo",
+  "descripcion": "Tabla que simula el catalogo de centros de costo de SAP (CSKS).",
+  "clave_primaria": "crb_sapcentrocostoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_sapcentrocostoid",
+      "nombre_display": "ID Centro Costo",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_centro_costo",
+      "nombre_display": "Codigo Centro Costo",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 10,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_descripcion",
+      "nombre_display": "Descripcion",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 100,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_responsable_email",
+      "nombre_display": "Email Responsable",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 100,
+      "requerido": true,
+      "descripcion": "Email del jefe o responsable del centro de costo para flujo de aprobacion"
+    },
+    {
+      "nombre_logico": "crb_sociedad",
+      "nombre_display": "Sociedad",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 4,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_activo",
+      "nombre_display": "Estado Activo",
+      "tipo": "TwoOption",
+      "etiqueta_si": "Si",
+      "etiqueta_no": "No",
+      "valor_defecto": true
+    }
+  ]
+}

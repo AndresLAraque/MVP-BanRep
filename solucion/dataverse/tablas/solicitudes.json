@@ -1,0 +1,219 @@
+{
+  "tabla": "crb_solicitudes",
+  "nombre_display": "Solicitudes de Viaticos",
+  "nombre_plural": "Solicitudes de Viaticos",
+  "descripcion": "Registro principal de cada solicitud de viaticos. Contiene datos del viaje, clasificacion legal y estado del proceso.",
+  "clave_primaria": "crb_solicitudid",
+  "propietario": "Usuario",
+  "campos": [
+    {
+      "nombre_logico": "crb_solicitudid",
+      "nombre_display": "Solicitud ID",
+      "tipo": "Uniqueidentifier",
+      "requerido": true,
+      "descripcion": "Identificador unico autogenerado"
+    },
+    {
+      "nombre_logico": "crb_numero_solicitud",
+      "nombre_display": "Numero de Solicitud",
+      "tipo": "AutoNumber",
+      "formato": "VIA-{SEQNUM:6}",
+      "descripcion": "Numero secuencial legible para el usuario. Ejemplo: VIA-000001"
+    },
+    {
+      "nombre_logico": "crb_solicitante",
+      "nombre_display": "Solicitante",
+      "tipo": "Lookup",
+      "tabla_referencia": "systemuser",
+      "requerido": true,
+      "descripcion": "Referencia al usuario que crea la solicitud"
+    },
+    {
+      "nombre_logico": "crb_fecha_creacion",
+      "nombre_display": "Fecha de Creacion",
+      "tipo": "DateTime",
+      "formato": "DateOnly",
+      "requerido": true,
+      "valor_defecto": "now()",
+      "descripcion": "Fecha en que se crea el registro"
+    },
+    {
+      "nombre_logico": "crb_destino",
+      "nombre_display": "Destino",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 200,
+      "requerido": true,
+      "descripcion": "Ciudad o lugar de destino del viaje"
+    },
+    {
+      "nombre_logico": "crb_pais",
+      "nombre_display": "Pais",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 100,
+      "requerido": true,
+      "descripcion": "Pais de destino"
+    },
+    {
+      "nombre_logico": "crb_motivo",
+      "nombre_display": "Motivo del Viaje",
+      "tipo": "MultiLineText",
+      "longitud_maxima": 2000,
+      "requerido": true,
+      "descripcion": "Justificacion del viaje vinculada a benchmarking en IA"
+    },
+    {
+      "nombre_logico": "crb_monto_estimado",
+      "nombre_display": "Monto Estimado",
+      "tipo": "Currency",
+      "precision": 2,
+      "min": 0,
+      "requerido": true,
+      "descripcion": "Monto total estimado del viaje"
+    },
+    {
+      "nombre_logico": "crb_moneda",
+      "nombre_display": "Moneda",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "COP"},
+        {"valor": 100000001, "etiqueta": "USD"},
+        {"valor": 100000002, "etiqueta": "EUR"}
+      ],
+      "requerido": true,
+      "valor_defecto": 100000000,
+      "descripcion": "Moneda de la solicitud"
+    },
+    {
+      "nombre_logico": "crb_centro_costo",
+      "nombre_display": "Centro de Costo",
+      "tipo": "Lookup",
+      "tabla_referencia": "crb_sap_centros_costo",
+      "requerido": true,
+      "descripcion": "Centro de costo que asume el gasto. Referencia a tabla SAP simulada"
+    },
+    {
+      "nombre_logico": "crb_estado",
+      "nombre_display": "Estado",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "Borrador"},
+        {"valor": 100000001, "etiqueta": "Enviada"},
+        {"valor": 100000002, "etiqueta": "Aprobada por Jefe"},
+        {"valor": 100000003, "etiqueta": "Aprobada por GH"},
+        {"valor": 100000004, "etiqueta": "Rechazada"},
+        {"valor": 100000005, "etiqueta": "En Pago"},
+        {"valor": 100000006, "etiqueta": "Pagada"},
+        {"valor": 100000007, "etiqueta": "Cancelada"},
+        {"valor": 100000008, "etiqueta": "Error de Pago"}
+      ],
+      "requerido": true,
+      "valor_defecto": 100000000,
+      "descripcion": "Estado actual de la solicitud dentro del flujo de aprobacion"
+    },
+    {
+      "nombre_logico": "crb_tipo_viatico",
+      "nombre_display": "Tipo de Viatico",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "Ocasional"},
+        {"valor": 100000001, "etiqueta": "Permanente"}
+      ],
+      "requerido": true,
+      "descripcion": "Clasificacion segun Art. 130 CST. Determina incidencia salarial"
+    },
+    {
+      "nombre_logico": "crb_justificacion_tipo",
+      "nombre_display": "Justificacion del Tipo",
+      "tipo": "MultiLineText",
+      "longitud_maxima": 1000,
+      "requerido": true,
+      "descripcion": "Justificacion obligatoria de por que el viatico es ocasional o permanente"
+    },
+    {
+      "nombre_logico": "crb_fecha_inicio_viaje",
+      "nombre_display": "Fecha Inicio del Viaje",
+      "tipo": "DateTime",
+      "formato": "DateOnly",
+      "requerido": true,
+      "descripcion": "Fecha de inicio del viaje"
+    },
+    {
+      "nombre_logico": "crb_fecha_fin_viaje",
+      "nombre_display": "Fecha Fin del Viaje",
+      "tipo": "DateTime",
+      "formato": "DateOnly",
+      "requerido": true,
+      "descripcion": "Fecha de finalizacion del viaje"
+    },
+    {
+      "nombre_logico": "crb_numero_dias",
+      "nombre_display": "Numero de Dias",
+      "tipo": "WholeNumber",
+      "min": 1,
+      "calculado": true,
+      "formula": "crb_fecha_fin_viaje - crb_fecha_inicio_viaje + 1",
+      "descripcion": "Dias de duracion del viaje (calculado automaticamente)"
+    },
+    {
+      "nombre_logico": "crb_requiere_anticipo",
+      "nombre_display": "Requiere Anticipo",
+      "tipo": "TwoOption",
+      "etiqueta_si": "Si",
+      "etiqueta_no": "No",
+      "valor_defecto": false,
+      "descripcion": "Indica si el empleado solicita anticipo de dinero"
+    },
+    {
+      "nombre_logico": "crb_monto_anticipo",
+      "nombre_display": "Monto del Anticipo",
+      "tipo": "Currency",
+      "precision": 2,
+      "min": 0,
+      "requerido_condicional": "crb_requiere_anticipo == true",
+      "descripcion": "Monto del anticipo solicitado (solo si requiere anticipo)"
+    },
+    {
+      "nombre_logico": "crb_medio_pago",
+      "nombre_display": "Medio de Pago",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "Anticipo en Efectivo"},
+        {"valor": 100000001, "etiqueta": "Tarjeta Corporativa"},
+        {"valor": 100000002, "etiqueta": "Mixto"}
+      ],
+      "requerido": true,
+      "descripcion": "Medio de pago para el viaje"
+    },
+    {
+      "nombre_logico": "crb_destino_tipo",
+      "nombre_display": "Tipo de Destino",
+      "tipo": "OptionSet",
+      "opciones": [
+        {"valor": 100000000, "etiqueta": "Nacional - Ciudad Principal"},
+        {"valor": 100000001, "etiqueta": "Nacional - Ciudad Intermedia"},
+        {"valor": 100000002, "etiqueta": "Internacional - Norteamerica"},
+        {"valor": 100000003, "etiqueta": "Internacional - Europa"},
+        {"valor": 100000004, "etiqueta": "Internacional - Latam"}
+      ],
+      "requerido": true,
+      "descripcion": "Clasificacion del destino para aplicar topes de monto"
+    }
+  ],
+  "reglas_de_negocio": [
+    {
+      "nombre": "Validar fechas de viaje",
+      "condicion": "crb_fecha_inicio_viaje > crb_fecha_fin_viaje",
+      "accion": "Error: La fecha de inicio debe ser anterior o igual a la fecha de fin"
+    },
+    {
+      "nombre": "Anticipo obligatorio si se selecciona",
+      "condicion": "crb_requiere_anticipo == true AND crb_monto_anticipo == null",
+      "accion": "Error: Debe especificar el monto del anticipo"
+    },
+    {
+      "nombre": "Monto anticipo no mayor al estimado",
+      "condicion": "crb_monto_anticipo > crb_monto_estimado",
+      "accion": "Error: El anticipo no puede ser mayor al monto estimado"
+    }
+  ]
+}

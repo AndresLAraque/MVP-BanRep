@@ -1,0 +1,19 @@
+{
+  "rol": "Administrador de Viaticos",
+  "descripcion": "Acceso total al sistema y configuracion.",
+  "privilegios": [
+    {
+      "tabla": "*",
+      "niveles": {
+        "Create": "Global",
+        "Read": "Global",
+        "Write": "Global",
+        "Delete": "Global",
+        "Append": "Global",
+        "AppendTo": "Global",
+        "Assign": "Global",
+        "Share": "Global"
+      }
+    }
+  ]
+}

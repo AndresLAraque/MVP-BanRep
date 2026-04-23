@@ -1,0 +1,50 @@
+# Pipeline: Exportar Solucion de Desarrollo
+# Disparador: Manual (on-demand)
+
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+- name: solutionName
+  value: 'ViaticosApp'
+- name: environmentConnection
+  value: 'PowerPlatform-Dev' # Nombre de la Service Connection creada en ADO
+
+steps:
+- task: microsoft-Iis6.Power Platform BuildTools.tool-installer.PowerPlatformToolInstaller@2
+  displayName: 'Power Platform Tool Installer'
+
+- task: microsoft-Iis6.Power Platform BuildTools.export-solution.PowerPlatformExportSolution@2
+  displayName: 'Exportar Unmanaged Solution'
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: '$(environmentConnection)'
+    SolutionName: '$(solutionName)'
+    SolutionOutputFile: '$(Build.ArtifactStagingDirectory)\$(solutionName).zip'
+    Managed: false
+
+- task: microsoft-Iis6.Power Platform BuildTools.export-solution.PowerPlatformExportSolution@2
+  displayName: 'Exportar Managed Solution'
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: '$(environmentConnection)'
+    SolutionName: '$(solutionName)'
+    SolutionOutputFile: '$(Build.ArtifactStagingDirectory)\$(solutionName)_managed.zip'
+    Managed: true
+
+- task: microsoft-Iis6.Power Platform BuildTools.unpack-solution.PowerPlatformUnpackSolution@2
+  displayName: 'Desempaquetar Solucion (Source Control)'
+  inputs:
+    SolutionInputFile: '$(Build.ArtifactStagingDirectory)\$(solutionName).zip'
+    SolutionTargetFolder: '$(Build.SourcesDirectory)\solucion\viaticos_app'
+    SolutionType: 'Both'
+
+- task: PostBuildCleanup@3
+  displayName: 'Commit a Git'
+  inputs:
+    Action: 'Commit'
+    RepositoryName: 'Viaticos-BanRep'
+    BranchName: 'main'
+    CommitMessage: 'Update solution source from Dev'

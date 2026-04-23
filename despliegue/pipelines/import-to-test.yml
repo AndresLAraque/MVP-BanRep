@@ -1,0 +1,34 @@
+# Pipeline: Desplegar a TEST
+# Disparador: Cambio en rama main (o manual)
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+- name: solutionName
+  value: 'ViaticosApp'
+- name: environmentConnection
+  value: 'PowerPlatform-Test'
+
+steps:
+- task: microsoft-Iis6.Power Platform BuildTools.tool-installer.PowerPlatformToolInstaller@2
+  displayName: 'Power Platform Tool Installer'
+
+- task: microsoft-Iis6.Power Platform BuildTools.pack-solution.PowerPlatformPackSolution@2
+  displayName: 'Empaquetar Solucion como Managed'
+  inputs:
+    SolutionSourceFolder: '$(Build.SourcesDirectory)\solucion\viaticos_app'
+    SolutionOutputFile: '$(Build.ArtifactStagingDirectory)\$(solutionName)_managed.zip'
+    SolutionType: 'Managed'
+
+- task: microsoft-Iis6.Power Platform BuildTools.import-solution.PowerPlatformImportSolution@2
+  displayName: 'Importar a TEST'
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: '$(environmentConnection)'
+    SolutionInputFile: '$(Build.ArtifactStagingDirectory)\$(solutionName)_managed.zip'
+    OverwriteUnmanagedCustomizations: true
+    PublishCustomizations: true

@@ -1,0 +1,3 @@
+crb_nivel,crb_rol_aprobador,crb_descripcion,crb_activo
+1,100000000,Aprobacion tecnica - Jefe Inmediato,true
+2,100000001,Validacion legal y salarial - Gestion Humana,true

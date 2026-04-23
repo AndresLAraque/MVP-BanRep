@@ -1,0 +1,57 @@
+{
+  "rol": "Empleado de Viaticos",
+  "descripcion": "Rol basico para solicitantes de viaticos. Permite crear y gestionar sus propias solicitudes.",
+  "privilegios": [
+    {
+      "tabla": "crb_solicitudes",
+      "niveles": {
+        "Create": "Basic",
+        "Read": "Basic",
+        "Write": "Basic",
+        "Delete": "Basic",
+        "Append": "Basic",
+        "AppendTo": "Basic"
+      }
+    },
+    {
+      "tabla": "crb_detalle_gastos",
+      "niveles": {
+        "Create": "Basic",
+        "Read": "Basic",
+        "Write": "Basic",
+        "Delete": "Basic",
+        "Append": "Basic",
+        "AppendTo": "Basic"
+      }
+    },
+    {
+      "tabla": "crb_documentos",
+      "niveles": {
+        "Create": "Basic",
+        "Read": "Basic",
+        "Write": "Basic",
+        "Delete": "Basic",
+        "Append": "Basic",
+        "AppendTo": "Basic"
+      }
+    },
+    {
+      "tabla": "crb_aprobaciones",
+      "niveles": {
+        "Read": "Basic"
+      }
+    },
+    {
+      "tabla": "crb_pagos",
+      "niveles": {
+        "Read": "Basic"
+      }
+    },
+    {
+      "tabla": "crb_config_topes_monto",
+      "niveles": {
+        "Read": "Global"
+      }
+    }
+  ]
+}

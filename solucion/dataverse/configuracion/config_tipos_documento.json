@@ -1,0 +1,37 @@
+{
+  "tabla": "crb_config_tipos_documento",
+  "nombre_display": "Config: Tipos de Documento",
+  "nombre_plural": "Config: Tipos de Documento",
+  "descripcion": "Define los tipos de archivos permitidos y sus restricciones.",
+  "clave_primaria": "crb_configtipodocumentoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_configtipodocumentoid",
+      "nombre_display": "ID Tipo Documento",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_nombre",
+      "nombre_display": "Nombre del Tipo",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 100,
+      "requerido": true,
+      "descripcion": "Ej: Factura, Invitacion, Resolucion"
+    },
+    {
+      "nombre_logico": "crb_extensiones_permitidas",
+      "nombre_display": "Extensiones Permitidas",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 100,
+      "descripcion": "Ej: pdf, jpg, png, docx"
+    },
+    {
+      "nombre_logico": "crb_tamano_maximo_mb",
+      "nombre_display": "Tamano Maximo (MB)",
+      "tipo": "WholeNumber",
+      "valor_defecto": 5
+    }
+  ]
+}

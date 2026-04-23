@@ -1,0 +1,60 @@
+{
+  "tabla": "crb_sap_maestro_empleados",
+  "nombre_display": "SAP: Maestro de Empleados",
+  "nombre_plural": "SAP: Maestros de Empleados",
+  "descripcion": "Tabla que simula el maestro de personal de SAP (PA0001/PA0002).",
+  "clave_primaria": "crb_sapmaestroempleadoid",
+  "propietario": "Organizacion",
+  "campos": [
+    {
+      "nombre_logico": "crb_sapmaestroempleadoid",
+      "nombre_display": "ID Maestro Empleado",
+      "tipo": "Uniqueidentifier",
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_numero_empleado",
+      "nombre_display": "Numero de Personal (PERNR)",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 10,
+      "requerido": true,
+      "descripcion": "ID unico del empleado en SAP"
+    },
+    {
+      "nombre_logico": "crb_nombre_completo",
+      "nombre_display": "Nombre Completo",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 200,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_centro_costo",
+      "nombre_display": "Centro de Costo",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 10,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_sociedad",
+      "nombre_display": "Sociedad",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 4,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_cuenta_bancaria",
+      "nombre_display": "Cuenta Bancaria",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 50,
+      "requerido": true
+    },
+    {
+      "nombre_logico": "crb_email_corporativo",
+      "nombre_display": "Email Corporativo",
+      "tipo": "SingleLineText",
+      "longitud_maxima": 100,
+      "requerido": true,
+      "descripcion": "Mapeo con UserPrincipalName de Azure AD"
+    }
+  ]
+}

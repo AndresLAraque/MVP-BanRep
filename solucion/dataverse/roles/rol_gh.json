@@ -1,0 +1,28 @@
+{
+  "rol": "Gestion Humana (Viaticos)",
+  "descripcion": "Rol para aprobadores de segundo nivel. Responsable de la validacion legal y salarial.",
+  "privilegios": [
+    {
+      "tabla": "crb_solicitudes",
+      "niveles": {
+        "Read": "Global",
+        "Write": "Global"
+      }
+    },
+    {
+      "tabla": "crb_aprobaciones",
+      "niveles": {
+        "Create": "Global",
+        "Read": "Global",
+        "Write": "Global"
+      }
+    },
+    {
+      "tabla": "crb_config_categorias_gasto",
+      "niveles": {
+        "Read": "Global",
+        "Write": "Global"
+      }
+    }
+  ]
+}

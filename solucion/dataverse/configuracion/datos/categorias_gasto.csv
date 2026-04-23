@@ -1,0 +1,6 @@
+crb_nombre,crb_constituye_salario_permanente,crb_descripcion
+Hospedaje,true,Gastos de alojamiento (habitacion, hotel)
+Alimentacion,true,Desayuno, almuerzo, cena y snacks
+Transporte,false,Pasajes aereos, terrestres y transporte local
+Gastos de Representacion,false,Gastos relacionados con relaciones corporativas
+Otro,false,Gastos no clasificados en las anteriores categorias

@@ -1,0 +1,11 @@
+crb_estado_origen,crb_estado_destino,crb_rol_ejecutor
+Borrador,Enviada,100000000
+Borrador,Cancelada,100000000
+Enviada,Aprobada_Jefe,100000001
+Enviada,Rechazada,100000001
+Aprobada_Jefe,Aprobada_GH,100000002
+Aprobada_Jefe,Rechazada,100000002
+Aprobada_GH,En_Pago,100000004
+En_Pago,Pagada,100000004
+En_Pago,Error_Pago,100000004
+Error_Pago,En_Pago,100000004

@@ -1,0 +1,17 @@
+{
+  "tabla": "crb_aprobaciones",
+  "nombre_display": "Aprobaciones",
+  "nombre_plural": "Aprobaciones",
+  "descripcion": "Registro de cada decision de aprobacion o rechazo por nivel dentro del flujo multinivel.",
+  "clave_primaria": "crb_aprobacionid",
+  "propietario": "Organizacion",
+  "campos": [
+    {"nombre_logico": "crb_aprobacionid", "nombre_display": "Aprobacion ID", "tipo": "Uniqueidentifier", "requerido": true},
+    {"nombre_logico": "crb_solicitud", "nombre_display": "Solicitud", "tipo": "Lookup", "tabla_referencia": "crb_solicitudes", "requerido": true, "comportamiento_eliminacion": "Cascade"},
+    {"nombre_logico": "crb_aprobador", "nombre_display": "Aprobador", "tipo": "Lookup", "tabla_referencia": "systemuser", "requerido": true, "descripcion": "Usuario asignado para aprobar en este nivel"},
+    {"nombre_logico": "crb_nivel", "nombre_display": "Nivel", "tipo": "WholeNumber", "min": 1, "max": 10, "requerido": true, "descripcion": "1=Jefe Inmediato, 2=Gestion Humana. Extensible a N niveles"},
+    {"nombre_logico": "crb_estado", "nombre_display": "Estado", "tipo": "OptionSet", "opciones": [{"valor": 100000000, "etiqueta": "Pendiente"}, {"valor": 100000001, "etiqueta": "Aprobada"}, {"valor": 100000002, "etiqueta": "Rechazada"}], "requerido": true, "valor_defecto": 100000000},
+    {"nombre_logico": "crb_comentario", "nombre_display": "Comentario", "tipo": "MultiLineText", "longitud_maxima": 2000, "requerido_condicional": "crb_estado == Rechazada", "descripcion": "Obligatorio en caso de rechazo"},
+    {"nombre_logico": "crb_fecha_decision", "nombre_display": "Fecha de Decision", "tipo": "DateTime", "formato": "DateAndTime", "descripcion": "Timestamp de cuando se tomo la decision"}
+  ]
+}

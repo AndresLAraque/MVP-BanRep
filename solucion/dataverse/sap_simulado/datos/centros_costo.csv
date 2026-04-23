@@ -1,0 +1,4 @@
+crb_centro_costo,crb_descripcion,crb_responsable_email,crb_sociedad,crb_activo
+CC001,Departamento de Tecnologia,joperaciones@banrep.gov.co,1000,true
+CC002,Departamento de Investigacion,cperez@banrep.gov.co,1000,true
+CC999,Gestion Humana,agh@banrep.gov.co,1000,true

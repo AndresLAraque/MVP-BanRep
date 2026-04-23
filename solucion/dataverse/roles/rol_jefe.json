@@ -1,0 +1,37 @@
+{
+  "rol": "Jefe Inmediato",
+  "descripcion": "Rol para aprobadores de primer nivel. Permite ver y aprobar solicitudes de su equipo.",
+  "privilegios": [
+    {
+      "tabla": "crb_solicitudes",
+      "niveles": {
+        "Read": "Local",
+        "Write": "Local",
+        "Append": "Local",
+        "AppendTo": "Local"
+      }
+    },
+    {
+      "tabla": "crb_aprobaciones",
+      "niveles": {
+        "Create": "Local",
+        "Read": "Local",
+        "Write": "Local",
+        "Append": "Local",
+        "AppendTo": "Local"
+      }
+    },
+    {
+      "tabla": "crb_detalle_gastos",
+      "niveles": {
+        "Read": "Local"
+      }
+    },
+    {
+      "tabla": "crb_sap_maestro_empleados",
+      "niveles": {
+        "Read": "Global"
+      }
+    }
+  ]
+}
