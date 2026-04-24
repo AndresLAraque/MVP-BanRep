@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Viáticos — Banco de la República</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --navy: #002D72; --navy-light: #003a8c; --navy-dark: #001a44;
+    --gold: #D4AF37; --gold-light: #e8c84a; --gold-pale: rgba(212,175,55,0.12);
+    --bg: #F4F4F4; --white: #ffffff; --text: #1a1a2e; --text2: #5a5a7a; --text3: #9999b3;
+    --border: #e0e0f0; --green: #1a7a4a; --red: #c0392b;
+    --green-bg: #e8f5ef; --red-bg: #fdecea; --amber: #e67e22; --amber-bg: #fef3e2;
+    --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: #e8e8f0; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 16px 0; }
+
+  /* LOGIN */
+  .login-overlay {
+    position: fixed; inset: 0; background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+    display: flex; align-items: center; justify-content: center; z-index: 999;
+  }
+  .login-box {
+    background: var(--white); border-radius: 20px; padding: 36px 32px; width: 360px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  }
+  .login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; justify-content: center; }
+  .login-logo .mark { width: 48px; height: 48px; background: var(--navy); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 22px; font-weight: 800; }
+  .login-logo .title { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .login-logo .sub { font-size: 11px; color: var(--text2); }
+  .login-field { margin-bottom: 14px; }
+  .login-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text2); margin-bottom: 5px; }
+  .login-field input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: var(--font); color: var(--text); transition: border-color .15s; }
+  .login-field input:focus { outline: none; border-color: var(--navy); }
+  .login-btn { width: 100%; padding: 12px; background: var(--navy); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: var(--font); cursor: pointer; margin-top: 6px; transition: background .15s; }
+  .login-btn:hover { background: var(--navy-light); }
+  .login-demo { margin-top: 18px; background: var(--gold-pale); border-radius: 10px; padding: 12px; border: 1px solid rgba(212,175,55,.3); }
+  .login-demo p { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text2); margin-bottom: 6px; }
+  .login-demo code { display: block; font-size: 11px; color: var(--navy); line-height: 1.7; font-family: monospace; }
+
+  /* APP FRAME */
+  .device-frame { width: 100%; max-width: 440px; background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,45,114,.18); min-height: 680px; position: relative; }
+
+  /* NAV */
+  .nav-tabs { display: flex; background: var(--navy-dark); border-bottom: 2px solid var(--gold); overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab { padding: 10px 13px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; transition: all .2s; letter-spacing: .03em; text-transform: uppercase; flex-shrink: 0; }
+  .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .nav-tab:hover:not(.active) { color: rgba(255,255,255,.8); }
+
+  .screen { display: none; flex-direction: column; height: 100%; }
+  .screen.active { display: flex; }
+
+  /* HEADER */
+  .app-header { background: var(--navy); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .header-logo { display: flex; align-items: center; gap: 10px; }
+  .logo-mark { width: 36px; height: 36px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: var(--navy); }
+  .logo-text .bank { font-size: 13px; font-weight: 700; letter-spacing: .05em; color: white; }
+  .logo-text .sub { font-size: 10px; color: var(--gold); opacity: .9; font-weight: 500; }
+  .header-user { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gold); color: var(--navy); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(212,175,55,.4); }
+  .user-info .name { font-size: 12px; font-weight: 600; color: white; text-align: right; }
+  .user-info .role { font-size: 10px; color: var(--gold); text-align: right; opacity: .9; }
+
+  /* BODY */
+  .screen-body { flex: 1; overflow-y: auto; background: var(--bg); padding: 16px; scrollbar-width: thin; scrollbar-color: var(--gold) transparent; }
+  .screen-body::-webkit-scrollbar { width: 4px; }
+  .screen-body::-webkit-scrollbar-thumb { background: rgba(212,175,55,.4); border-radius: 2px; }
+
+  /* STATS */
+  .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 18px; }
+  .stat-card { background: var(--white); border-radius: 12px; padding: 14px 10px; text-align: center; border: 1px solid var(--border); border-top: 3px solid var(--navy); transition: transform .15s; }
+  .stat-card:hover { transform: translateY(-2px); }
+  .stat-card.gold { border-top-color: var(--gold); }
+  .stat-card.green { border-top-color: var(--green); }
+  .stat-num { font-size: 26px; font-weight: 700; color: var(--navy); }
+  .stat-card.gold .stat-num { color: var(--amber); }
+  .stat-card.green .stat-num { color: var(--green); }
+  .stat-label { font-size: 10px; color: var(--text2); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
+
+  /* SECTION LABEL */
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text2); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* SOL CARD */
+  .sol-card { background: var(--white); border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start; cursor: pointer; transition: box-shadow .2s, border-color .2s; }
+  .sol-card:hover { box-shadow: 0 4px 16px rgba(0,45,114,.1); border-color: rgba(212,175,55,.4); }
+  .sol-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gold-pale); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; border: 1.5px solid var(--gold); }
+  .sol-info { flex: 1; }
+  .sol-destino { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .sol-fecha { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .sol-right { text-align: right; flex-shrink: 0; }
+  .sol-monto { font-size: 13px; font-weight: 700; color: var(--navy); }
+
+  /* BADGES */
+  .badge { display: inline-block; padding: 3px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-top: 4px; }
+  .badge.pendiente   { background: var(--gold-pale); color: #8a6d00; border: 1px solid rgba(212,175,55,.4); }
+  .badge.en_aprobacion { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(230,126,34,.3); }
+  .badge.aprobado    { background: var(--green-bg); color: var(--green); border: 1px solid rgba(26,122,74,.2); }
+  .badge.rechazado   { background: var(--red-bg); color: var(--red); border: 1px solid rgba(192,57,43,.2); }
+  .badge.borrador    { background: #f0f0f8; color: var(--text2); border: 1px solid var(--border); }
+  .badge.pagado      { background: #e8f0fe; color: var(--navy); border: 1px solid rgba(0,45,114,.2); }
+
+  /* FAB */
+  .fab { position: sticky; bottom: 16px; display: flex; justify-content: flex-end; margin-top: 8px; }
+  .fab-btn { width: 52px; height: 52px; border-radius: 50%; background: var(--navy); border: 3px solid var(--gold); color: white; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 20px rgba(0,45,114,.35); transition: transform .15s, box-shadow .15s; }
+  .fab-btn:hover { transform: scale(1.08) rotate(90deg); box-shadow: 0 8px 28px rgba(0,45,114,.45); }
+
+  /* FORM */
+  .form-section { background: var(--white); border-radius: 12px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .form-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--navy); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--gold); display: flex; align-items: center; gap: 6px; }
+  .field-group { margin-bottom: 12px; }
+  .field-label { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
+  .field-input { width: 100%; padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--bg); font-size: 13px; font-family: var(--font); color: var(--text); transition: border-color .15s; }
+  .field-input:focus { outline: none; border-color: var(--navy); background: var(--white); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .toggle-label { font-size: 13px; font-weight: 500; color: var(--text); }
+  .toggle-sub { font-size: 11px; color: var(--text2); }
+  .toggle-switch { width: 44px; height: 24px; background: var(--border); border-radius: 12px; position: relative; cursor: pointer; transition: background .2s; flex-shrink: 0; }
+  .toggle-switch.on { background: var(--navy); }
+  .toggle-switch::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: white; top: 3px; left: 3px; transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+  .toggle-switch.on::after { transform: translateX(20px); }
+
+  /* TABLE */
+  .expense-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .expense-table th { background: var(--navy); color: white; padding: 8px 10px; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; text-align: left; }
+  .expense-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+  .expense-table td input { border: none; background: transparent; font-family: var(--font); font-size: 12px; color: var(--text); width: 100%; }
+  .expense-table td input:focus { outline: none; background: var(--gold-pale); border-radius: 4px; padding: 2px 4px; }
+  .expense-table tr:hover td { background: var(--gold-pale); }
+  .expense-total { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--gold-pale); border-radius: 8px; margin-top: 10px; border: 1px solid rgba(212,175,55,.3); }
+  .expense-total .label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text2); }
+  .expense-total .value { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .validation-bar { border-radius: 8px; padding: 8px 12px; font-size: 11px; font-weight: 600; margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+  .validation-bar.ok { background: var(--green-bg); color: var(--green); }
+  .validation-bar.warn { background: var(--amber-bg); color: var(--amber); }
+  .add-row { width: 100%; padding: 8px; border: 1.5px dashed rgba(0,45,114,.3); background: transparent; border-radius: 8px; color: var(--navy); font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 8px; font-family: var(--font); transition: all .15s; }
+  .add-row:hover { border-color: var(--gold); background: var(--gold-pale); }
+
+  /* ATTACH */
+  .attach-zone { border: 2px dashed rgba(0,45,114,.25); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; }
+  .attach-zone:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .attach-icon { font-size: 28px; margin-bottom: 6px; }
+  .attach-text { font-size: 12px; color: var(--text2); }
+  .attach-text strong { color: var(--navy); }
+  .attached-file { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--bg); border-radius: 8px; margin-top: 8px; border: 1px solid var(--border); font-size: 12px; color: var(--text); }
+  .ocr-result { background: var(--green-bg); border: 1px solid rgba(26,122,74,.2); border-radius: 8px; padding: 8px 12px; margin-top: 6px; font-size: 11px; color: var(--green); }
+  .ocr-monto { font-weight: 700; font-size: 13px; }
+
+  /* FORM ACTIONS */
+  .form-actions { display: flex; gap: 10px; padding: 14px 16px; background: var(--white); border-top: 1px solid var(--border); flex-shrink: 0; }
+  .btn { padding: 11px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; border: none; transition: all .15s; flex: 1; }
+  .btn-primary { background: var(--navy); color: white; border: 2px solid var(--navy); }
+  .btn-primary:hover { background: var(--navy-light); box-shadow: 0 4px 14px rgba(0,45,114,.35); }
+  .btn-secondary { background: transparent; color: var(--navy); border: 2px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--navy); background: rgba(0,45,114,.04); }
+  .btn-gold { background: var(--gold); color: var(--navy); border: 2px solid var(--gold); font-weight: 700; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-danger { background: var(--red); color: white; border: 2px solid var(--red); }
+  .btn-success { background: var(--green); color: white; border: 2px solid var(--green); }
+
+  /* TIMELINE */
+  .timeline { display: flex; align-items: flex-start; margin: 16px 0; overflow-x: auto; padding: 4px 0 12px; }
+  .tl-step { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 60px; position: relative; }
+  .tl-step::before { content: ''; position: absolute; top: 18px; left: 50%; right: -50%; height: 2px; background: var(--border); z-index: 0; }
+  .tl-step:last-child::before { display: none; }
+  .tl-step.done::before { background: var(--navy); }
+  .tl-step.current::before { background: linear-gradient(90deg, var(--navy) 50%, var(--border) 50%); }
+  .tl-dot { width: 36px; height: 36px; border-radius: 50%; background: var(--border); color: var(--text2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; z-index: 1; position: relative; border: 2px solid var(--border); transition: all .2s; }
+  .tl-step.done .tl-dot { background: var(--navy); color: white; border-color: var(--navy); }
+  .tl-step.current .tl-dot { background: var(--gold); color: var(--navy); border-color: var(--gold); box-shadow: 0 0 0 4px rgba(212,175,55,.2); }
+  .tl-step.rejected .tl-dot { background: var(--red); color: white; border-color: var(--red); }
+  .tl-label { font-size: 9px; font-weight: 600; text-align: center; margin-top: 6px; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; }
+  .tl-step.done .tl-label { color: var(--navy); }
+  .tl-step.current .tl-label { color: var(--amber); }
+
+  /* DETAIL */
+  .detail-panel { background: var(--white); border-radius: 12px; padding: 14px; border: 1px solid var(--border); margin-bottom: 12px; }
+  .detail-panel-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text2); margin-bottom: 10px; letter-spacing: .06em; }
+  .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-key { color: var(--text2); font-weight: 600; }
+  .detail-val { color: var(--text); font-weight: 500; text-align: right; }
+  .detail-val.gold { color: var(--amber); font-weight: 700; }
+  .detail-val.navy { color: var(--navy); font-weight: 700; }
+  .detail-val.green { color: var(--green); font-weight: 600; }
+  .detail-val.red { color: var(--red); font-weight: 600; }
+
+  /* APPROVAL */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .filter-chip { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1.5px solid var(--border); background: var(--white); color: var(--text2); cursor: pointer; transition: all .15s; }
+  .filter-chip.active { background: var(--navy); color: white; border-color: var(--navy); }
+  .approval-card { background: var(--white); border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid var(--border); border-left: 4px solid var(--gold); cursor: pointer; transition: box-shadow .2s; }
+  .approval-card:hover { box-shadow: 0 4px 16px rgba(0,45,114,.1); }
+  .aprov-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .aprov-name { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .aprov-date { font-size: 10px; color: var(--text3); }
+  .aprov-meta { display: flex; gap: 8px; font-size: 11px; color: var(--text2); flex-wrap: wrap; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: absolute; inset: 0; background: rgba(0,20,50,.55); z-index: 50; align-items: flex-end; justify-content: center; border-radius: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: var(--white); border-radius: 20px 20px 0 0; padding: 20px 18px; width: 100%; box-shadow: 0 -8px 40px rgba(0,20,50,.15); animation: slideUp .25s ease; position: relative; }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .modal-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .modal-close { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; color: var(--text2); }
+
+  /* SUCCESS */
+  .success-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; text-align: center; flex: 1; background: var(--bg); }
+  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: var(--navy); border: 4px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 20px; animation: popIn .4s cubic-bezier(.36,.07,.19,.97); }
+  @keyframes popIn { 0% { transform: scale(0); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+  .confetti-container { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .confetti-piece { position: absolute; width: 8px; height: 8px; opacity: 0; animation: confettiFall 2.5s ease-out forwards; }
+  @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(500px) rotate(720deg); opacity: 0; } }
+
+  /* MISC */
+  .error-toast { background: var(--red); color: white; padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; margin-bottom: 12px; display: none; }
+  .loading { text-align: center; padding: 24px; color: var(--text2); font-size: 13px; }
+  .empty-state { text-align: center; padding: 32px 16px; color: var(--text2); font-size: 13px; }
+  .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
+  .back-btn { color: white; font-size: 18px; cursor: pointer; margin-right: 10px; }
+  .logout-btn { font-size: 11px; color: rgba(255,255,255,.6); cursor: pointer; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,.2); transition: all .15s; }
+  .logout-btn:hover { color: var(--gold); border-color: var(--gold); }
+  .doc-file-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--bg); border-radius: 8px; margin-top: 6px; border: 1px solid var(--border); font-size: 12px; flex-wrap: wrap; }
+  .doc-file-row .doc-name { color: var(--navy); font-weight: 600; flex: 1; }
+  .doc-ocr-badge { background: var(--green-bg); color: var(--green); border-radius: 6px; padding: 2px 8px; font-size: 10px; font-weight: 700; border: 1px solid rgba(26,122,74,.2); }
+  .upload-zone { border: 2px dashed rgba(0,45,114,.25); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; position: relative; }
+  .upload-zone:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-loading { display: none; font-size: 12px; color: var(--text2); margin-top: 8px; text-align: center; }
+  .solref { font-size: 11px; color: var(--text3); font-family: monospace; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="mark">B</div>
+      <div>
+        <div class="title">Banco de la República</div>
+        <div class="sub">Sistema de Viáticos · Prototipo</div>
+      </div>
+    </div>
+    <div id="loginError" class="error-toast"></div>
+    <div class="login-field">
+      <label>Correo institucional</label>
+      <input id="loginEmail" type="email" placeholder="usuario@banco.gov.co" />
+    </div>
+    <div class="login-field">
+      <label>Contraseña</label>
+      <input id="loginPassword" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()" />
+    </div>
+    <button class="login-btn" onclick="doLogin()">Ingresar →</button>
+    <div class="login-demo">
+      <p>Credenciales demo</p>
+      <code>
+        carlos@banco.gov.co / demo1234  (empleado)<br>
+        maria@banco.gov.co  / demo1234  (aprobador)<br>
+        ana@banco.gov.co    / demo1234  (gh)<br>
+        admin@banco.gov.co  / demo1234  (admin)
+      </code>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+<div style="width:100%;max-width:440px;">
+<div class="device-frame" id="app">
+
+  <div class="nav-tabs" id="navTabs">
+    <div class="nav-tab active" data-screen="dashboard">📊 Dashboard</div>
+    <div class="nav-tab" data-screen="form">📝 Nueva</div>
+    <div class="nav-tab" data-screen="tracking">📍 Tracking</div>
+    <div class="nav-tab" data-screen="approval">✅ Aprobación</div>
+    <div class="nav-tab" data-screen="success">🎉 Enviado</div>
+  </div>
+
+  <!-- ═══ DASHBOARD ═══ -->
+  <div class="screen active" id="screen-dashboard">
+    <div class="app-header">
+      <div class="header-logo">
+        <div class="logo-mark">B</div>
+        <div class="logo-text">
+          <div class="bank" id="dashBankName">Banco de la República</div>
+          <div class="sub">Sistema de Viáticos</div>
+        </div>
+      </div>
+      <div class="header-user" onclick="doLogout()">
+        <div class="user-info">
+          <div class="name" id="dashUserName">—</div>
+          <div class="role" id="dashUserRole">—</div>
+        </div>
+        <div class="avatar" id="dashAvatar">?</div>
+      </div>
+    </div>
+    <div class="screen-body">
+      <div class="error-toast" id="dashError"></div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-num" id="statTotal">—</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-num" id="statPending">—</div>
+          <div class="stat-label">En proceso</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-num" id="statApproved">—</div>
+          <div class="stat-label">Aprobadas</div>
+        </div>
+      </div>
+      <div class="section-label">Solicitudes recientes</div>
+      <div id="solicitudesList"><div class="loading">Cargando solicitudes...</div></div>
+      <div class="fab">
+        <div class="fab-btn" onclick="showScreen('form')" title="Nueva solicitud">+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FORM ═══ -->
+  <div class="screen" id="screen-form">
+    <div class="app-header">
+      <div class="header-logo">
+        <span class="back-btn" onclick="showScreen('dashboard')">←</span>
+        <div class="logo-text">
+          <div class="bank">Nueva Solicitud</div>
+          <div class="sub">Viáticos — Gestión Humana</div>
+        </div>
+      </div>
+      <span class="badge borrador">Borrador</span>
+    </div>
+    <div class="screen-body">
+      <div class="error-toast" id="formError"></div>
+
+      <div class="form-section">
+        <div class="form-section-title">📍 Datos generales</div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Destino</div>
+            <input class="field-input" id="fDestino" type="text" placeholder="Ciudad" />
+          </div>
+          <div class="field-group">
+            <div class="field-label">País</div>
+            <select class="field-input" id="fPais">
+              <option>Colombia</option><option>México</option><option>Chile</option>
+              <option>Brasil</option><option>Argentina</option><option>Perú</option><option>Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Motivo del viaje</div>
+          <input class="field-input" id="fMotivo" type="text" placeholder="Ej: Benchmarking implementación IA" />
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Fecha inicio</div>
+            <input class="field-input" id="fFechaInicio" type="date" />
+          </div>
+          <div class="field-group">
+            <div class="field-label">Fecha fin</div>
+            <input class="field-input" id="fFechaFin" type="date" />
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Centro de costo</div>
+          <input class="field-input" id="fCentroCosto" type="text" placeholder="CC-4201 · Dir. Talento Humano" />
+        </div>
+        <div class="field-group">
+          <div class="field-label">Monto total estimado (COP)</div>
+          <input class="field-input" id="fMonto" type="number" min="0" placeholder="2400000" />
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">¿Requiere anticipo?</div>
+            <div class="toggle-sub">Activa campo de monto anticipo</div>
+          </div>
+          <div class="toggle-switch" id="toggleAnticipo" onclick="toggleAnticipo()"></div>
+        </div>
+        <div id="anticipoField" class="field-group" style="margin-top:12px;display:none;">
+          <div class="field-label">Monto anticipo (COP)</div>
+          <input class="field-input" id="fAnticipo" type="number" min="0" placeholder="1200000" />
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">💰 Desglose de gastos</div>
+        <div style="overflow-x:auto;">
+          <table class="expense-table" id="expenseTable">
+            <thead><tr><th>Categoría</th><th>Monto</th><th>Descripción</th><th></th></tr></thead>
+            <tbody id="expenseBody">
+              <tr>
+                <td><input placeholder="Hospedaje" /></td>
+                <td><input type="number" placeholder="0" /></td>
+                <td><input placeholder="Hotel 3 noches" /></td>
+                <td><span onclick="removeRow(this)" style="cursor:pointer;color:var(--red);font-size:14px;">✕</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="add-row" onclick="addExpenseRow()">+ Agregar fila</button>
+        <div class="expense-total">
+          <span class="label">Total desglose</span>
+          <span class="value" id="expenseTotal">$0</span>
+        </div>
+        <div class="validation-bar ok" id="validationBar" style="display:none;"></div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">📎 Documentación</div>
+        <p style="font-size:11px;color:var(--text2);margin-bottom:10px;">Puedes adjuntar documentos después de crear la solicitud desde la pantalla de Tracking.</p>
+        <div style="background:var(--gold-pale);border-radius:8px;padding:10px;font-size:11px;color:var(--amber);border:1px solid rgba(212,175,55,.3);">
+          💡 Los documentos (PDF/JPG/PNG) se procesan con OCR para detectar montos automáticamente.
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-secondary" onclick="showScreen('dashboard')">Cancelar</button>
+      <button class="btn btn-primary" onclick="submitForm()">Enviar solicitud →</button>
+    </div>
+  </div>
+
+  <!-- ═══ TRACKING ═══ -->
+  <div class="screen" id="screen-tracking">
+    <div class="app-header">
+      <div class="header-logo">
+        <span class="back-btn" onclick="showScreen('dashboard')">←</span>
+        <div class="logo-text">
+          <div class="bank" id="trackingTitle">Tracking</div>
+          <div class="sub solref" id="trackingRef">—</div>
+        </div>
+      </div>
+      <span class="badge" id="trackingBadge">—</span>
+    </div>
+    <div class="screen-body">
+      <div class="error-toast" id="trackingError"></div>
+      <div id="trackingContent"><div class="loading">Cargando...</div></div>
+
+      <!-- Subir documentos -->
+      <div class="detail-panel" id="uploadPanel" style="display:none;">
+        <div class="detail-panel-title">📎 Adjuntar documento + OCR</div>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" onchange="uploadFile()" />
+          <div class="attach-icon">📁</div>
+          <div class="attach-text"><strong>Toca para adjuntar</strong><br/>PDF · JPG · PNG — Máx. 10 MB</div>
+        </div>
+        <div class="upload-loading" id="uploadLoading">⏳ Subiendo y procesando OCR...</div>
+        <div id="documentosList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ APPROVAL ═══ -->
+  <div class="screen" id="screen-approval">
+    <div class="app-header">
+      <div class="header-logo">
+        <div class="logo-mark">B</div>
+        <div class="logo-text">
+          <div class="bank">Consola Aprobación</div>
+          <div class="sub" id="approvalSubtitle">—</div>
+        </div>
+      </div>
+      <div class="avatar" id="approvalAvatar">?</div>
+    </div>
+    <div class="screen-body">
+      <div class="error-toast" id="approvalError"></div>
+      <div class="filter-bar">
+        <div class="filter-chip active" onclick="filterApproval('all',this)">Todos</div>
+        <div class="filter-chip" onclick="filterApproval('pendiente',this)">Pendientes</div>
+        <div class="filter-chip" onclick="filterApproval('en_aprobacion',this)">En aprobación</div>
+      </div>
+      <div id="approvalList"><div class="loading">Cargando...</div></div>
+    </div>
+
+    <!-- MODAL APROBAR -->
+    <div class="modal-overlay" id="approvalModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('approvalModal')">✕</button>
+        <div class="modal-title">✅ Aprobar solicitud</div>
+        <div class="modal-sub" id="approvalModalSub">—</div>
+        <div class="field-group">
+          <div class="field-label">Comentario (opcional)</div>
+          <input class="field-input" id="approvalComment" placeholder="Revisado y conforme con política..." />
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" onclick="closeModal('approvalModal')">Cancelar</button>
+          <button class="btn btn-success" onclick="confirmApprove()">Aprobar →</button>
+        </div>
+        <div style="margin-top:10px;">
+          <button class="btn btn-danger" style="width:100%;" onclick="openRejectModal()">Rechazar — requiere motivo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL RECHAZAR -->
+    <div class="modal-overlay" id="rejectModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('rejectModal')">✕</button>
+        <div class="modal-title" style="color:var(--red);">❌ Rechazar solicitud</div>
+        <div class="modal-sub">El comentario es obligatorio para continuar</div>
+        <div class="field-group">
+          <div class="field-label">Motivo de rechazo *</div>
+          <textarea class="field-input" id="rejectComment" rows="3" placeholder="Describe el motivo detallado..." style="resize:vertical;"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" onclick="closeModal('rejectModal')">Cancelar</button>
+          <button class="btn btn-danger" onclick="confirmReject()">Confirmar rechazo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SUCCESS ═══ -->
+  <div class="screen" id="screen-success">
+    <div class="app-header">
+      <div class="header-logo">
+        <div class="logo-mark">B</div>
+        <div class="logo-text">
+          <div class="bank">Banco de la República</div>
+          <div class="sub">Solicitud enviada</div>
+        </div>
+      </div>
+    </div>
+    <div class="success-screen" style="position:relative;">
+      <div class="confetti-container" id="confetti"></div>
+      <div class="success-icon">✓</div>
+      <h2 style="font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;">¡Solicitud enviada!</h2>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:6px;">Tu solicitud fue registrada exitosamente</p>
+      <div style="background:var(--gold-pale);border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:12px 20px;margin:16px 0;text-align:center;">
+        <div style="font-size:11px;text-transform:uppercase;font-weight:700;color:var(--text2);letter-spacing:.06em;">Número de radicado</div>
+        <div style="font-size:20px;font-weight:700;color:var(--navy);margin-top:4px;" id="successRef">—</div>
+      </div>
+      <p style="font-size:12px;color:var(--text2);max-width:280px;line-height:1.6;margin-bottom:24px;">
+        El proceso de aprobación ha iniciado. Puedes hacer seguimiento desde la pantalla de Tracking.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;">
+        <button class="btn btn-primary" onclick="goToTracking()">📍 Ver tracking →</button>
+        <button class="btn btn-secondary" onclick="showScreen('dashboard')">← Volver al Dashboard</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════════════
+// En local (file://) apunta a localhost; en producción usa el mismo dominio
+const API = window.location.protocol === 'file:' ? 'http://localhost:8000' : window.location.origin;
+
+// ══════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════
+let token = localStorage.getItem('vt_token');
+let currentUser = JSON.parse(localStorage.getItem('vt_user') || 'null');
+let currentSolicitudId = null;
+let pendingApprovalId = null;
+let allSolicitudes = [];
+
+// ══════════════════════════════════════════════════
+//  API HELPER
+// ══════════════════════════════════════════════════
+async function api(method, path, body = null) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const res = await fetch(`${API}${path}`, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : null,
+  });
+  if (!res.ok) {
+    let msg = `Error ${res.status}`;
+    try { msg = (await res.json()).detail || msg; } catch (_) {}
+    throw new Error(msg);
+  }
+  if (res.status === 204) return null;
+  return res.json();
+}
+
+async function apiUpload(path, formData) {
+  const headers = {};
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const res = await fetch(`${API}${path}`, { method: 'POST', headers, body: formData });
+  if (!res.ok) {
+    let msg = `Error ${res.status}`;
+    try { msg = (await res.json()).detail || msg; } catch (_) {}
+    throw new Error(msg);
+  }
+  return res.json();
+}
+
+function showErr(elId, msg) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 5000);
+}
+
+// ══════════════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════════════
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPassword').value;
+  if (!email || !pass) { showErr('loginError', 'Ingresa email y contraseña'); return; }
+  try {
+    const data = await api('POST', '/auth/login', { email, password: pass });
+    token = data.access_token;
+    currentUser = data.user;
+    localStorage.setItem('vt_token', token);
+    localStorage.setItem('vt_user', JSON.stringify(currentUser));
+    document.getElementById('loginOverlay').style.display = 'none';
+    initApp();
+  } catch (e) {
+    showErr('loginError', e.message);
+  }
+}
+
+function doLogout() {
+  token = null; currentUser = null;
+  localStorage.removeItem('vt_token');
+  localStorage.removeItem('vt_user');
+  document.getElementById('loginOverlay').style.display = 'flex';
+}
+
+// ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
+function initApp() {
+  if (!currentUser) return;
+  // Set user info in header
+  document.getElementById('dashUserName').textContent = currentUser.nombre;
+  document.getElementById('dashUserRole').textContent = capitalizeRole(currentUser.rol);
+  const initials = currentUser.nombre.split(' ').map(n => n[0]).join('').substring(0,2);
+  document.getElementById('dashAvatar').textContent = initials;
+  document.getElementById('approvalAvatar').textContent = initials;
+  document.getElementById('approvalSubtitle').textContent = `${currentUser.nombre} · ${capitalizeRole(currentUser.rol)}`;
+  // Nav tabs visibility
+  const approvalTab = document.querySelector('[data-screen="approval"]');
+  if (currentUser.rol === 'empleado') approvalTab.style.display = 'none';
+  loadDashboard();
+}
+
+function capitalizeRole(r) {
+  const map = { empleado:'Empleado', aprobador:'Aprobador · Jefe', gh:'Gestión Humana', finanzas:'Presupuesto', admin:'Admin' };
+  return map[r] || r;
+}
+
+// ══════════════════════════════════════════════════
+//  SCREEN ROUTING
+// ══════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  const tab = document.querySelector(`[data-screen="${id}"]`);
+  if (tab) tab.classList.add('active');
+  if (id === 'dashboard') loadDashboard();
+  if (id === 'approval')  loadApproval();
+  if (id === 'success')   spawnConfetti();
+}
+
+// ══════════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════════
+async function loadDashboard() {
+  try {
+    allSolicitudes = await api('GET', '/solicitudes');
+    renderDashboard(allSolicitudes);
+  } catch (e) {
+    showErr('dashError', e.message);
+  }
+}
+
+function renderDashboard(list) {
+  const total    = list.length;
+  const pending  = list.filter(s => ['pendiente','en_aprobacion'].includes(s.estado)).length;
+  const approved = list.filter(s => ['aprobado','pagado'].includes(s.estado)).length;
+  document.getElementById('statTotal').textContent    = total;
+  document.getElementById('statPending').textContent  = pending;
+  document.getElementById('statApproved').textContent = approved;
+
+  const container = document.getElementById('solicitudesList');
+  if (!list.length) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">📋</div>No tienes solicitudes aún.<br/>Toca + para crear una.</div>';
+    return;
+  }
+  container.innerHTML = list.slice(0, 10).map(s => `
+    <div class="sol-card" onclick="openTracking(${s.id})">
+      <div class="sol-icon">${destinoIcon(s.pais)}</div>
+      <div class="sol-info">
+        <div class="sol-destino">${s.destino} — ${s.pais}</div>
+        <div class="sol-fecha">${s.fecha_inicio} → ${s.fecha_fin} · ${s.motivo.substring(0,40)}${s.motivo.length>40?'…':''}</div>
+      </div>
+      <div class="sol-right">
+        <div class="sol-monto">$${s.monto_total.toLocaleString('es-CO')}</div>
+        <div class="badge ${s.estado}">${badgeLabel(s.estado)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function destinoIcon(pais) {
+  const map = { Colombia:'✈️', México:'🌎', Chile:'🌐', Brasil:'🌿', Argentina:'🏔️' };
+  return map[pais] || '✈️';
+}
+
+function badgeLabel(estado) {
+  const map = { pendiente:'⏳ Pendiente', en_aprobacion:'🔄 En aprobación', aprobado:'✔ Aprobado', rechazado:'✕ Rechazado', borrador:'Borrador', pagado:'💳 Pagado' };
+  return map[estado] || estado;
+}
+
+// ══════════════════════════════════════════════════
+//  FORM
+// ══════════════════════════════════════════════════
+function toggleAnticipo() {
+  const sw = document.getElementById('toggleAnticipo');
+  const field = document.getElementById('anticipoField');
+  sw.classList.toggle('on');
+  field.style.display = sw.classList.contains('on') ? 'block' : 'none';
+}
+
+function addExpenseRow() {
+  const tbody = document.getElementById('expenseBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input placeholder="Categoría" /></td>
+    <td><input type="number" placeholder="0" oninput="updateExpenseTotal()" /></td>
+    <td><input placeholder="Descripción" /></td>
+    <td><span onclick="removeRow(this)" style="cursor:pointer;color:var(--red);font-size:14px;">✕</span></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function removeRow(btn) {
+  btn.closest('tr').remove();
+  updateExpenseTotal();
+}
+
+function updateExpenseTotal() {
+  const inputs = document.querySelectorAll('#expenseBody input[type=number]');
+  let sum = 0;
+  inputs.forEach(i => { sum += parseFloat(i.value) || 0; });
+  document.getElementById('expenseTotal').textContent = `$${sum.toLocaleString('es-CO')}`;
+  const monto = parseFloat(document.getElementById('fMonto').value) || 0;
+  const bar = document.getElementById('validationBar');
+  if (monto > 0) {
+    bar.style.display = 'flex';
+    if (sum <= monto) {
+      bar.className = 'validation-bar ok';
+      bar.textContent = `✔ Desglose ($${sum.toLocaleString('es-CO')}) ≤ Monto estimado ($${monto.toLocaleString('es-CO')})`;
+    } else {
+      bar.className = 'validation-bar warn';
+      bar.textContent = `⚠ Desglose ($${sum.toLocaleString('es-CO')}) supera el monto estimado ($${monto.toLocaleString('es-CO')})`;
+    }
+  } else {
+    bar.style.display = 'none';
+  }
+}
+
+function getExpenseRows() {
+  const rows = [];
+  document.querySelectorAll('#expenseBody tr').forEach(tr => {
+    const inputs = tr.querySelectorAll('input');
+    if (inputs.length >= 2) {
+      const cat = inputs[0].value.trim();
+      const monto = parseFloat(inputs[1].value) || 0;
+      const desc = inputs[2] ? inputs[2].value.trim() : '';
+      if (cat || monto) rows.push({ categoria: cat || 'Sin categoría', monto, descripcion: desc });
+    }
+  });
+  return rows;
+}
+
+async function submitForm() {
+  const destino  = document.getElementById('fDestino').value.trim();
+  const motivo   = document.getElementById('fMotivo').value.trim();
+  const monto    = parseFloat(document.getElementById('fMonto').value);
+  const pais     = document.getElementById('fPais').value;
+  const fi       = document.getElementById('fFechaInicio').value;
+  const ff       = document.getElementById('fFechaFin').value;
+
+  if (!destino || !motivo || !monto || !fi || !ff) {
+    showErr('formError', 'Completa todos los campos obligatorios');
+    return;
+  }
+
+  const anticipo = document.getElementById('toggleAnticipo').classList.contains('on')
+    ? parseFloat(document.getElementById('fAnticipo').value) || 0
+    : 0;
+
+  const payload = {
+    destino, pais, motivo,
+    fecha_inicio: fi, fecha_fin: ff,
+    monto_total: monto,
+    anticipo,
+    centro_costo: document.getElementById('fCentroCosto').value.trim() || null,
+    detalles: getExpenseRows(),
+  };
+
+  try {
+    const sol = await api('POST', '/solicitudes', payload);
+    currentSolicitudId = sol.id;
+    document.getElementById('successRef').textContent = `SOL-${String(sol.id).padStart(4,'0')}`;
+    showScreen('success');
+    resetForm();
+  } catch (e) {
+    showErr('formError', e.message);
+  }
+}
+
+function resetForm() {
+  ['fDestino','fMotivo','fMonto','fFechaInicio','fFechaFin','fCentroCosto','fAnticipo'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('expenseBody').innerHTML = `
+    <tr>
+      <td><input placeholder="Hospedaje" /></td>
+      <td><input type="number" placeholder="0" /></td>
+      <td><input placeholder="Hotel 3 noches" /></td>
+      <td><span onclick="removeRow(this)" style="cursor:pointer;color:var(--red);font-size:14px;">✕</span></td>
+    </tr>`;
+  document.getElementById('expenseTotal').textContent = '$0';
+  document.getElementById('validationBar').style.display = 'none';
+  document.getElementById('toggleAnticipo').classList.remove('on');
+  document.getElementById('anticipoField').style.display = 'none';
+}
+
+function goToTracking() {
+  if (currentSolicitudId) openTracking(currentSolicitudId);
+  else showScreen('tracking');
+}
+
+// ══════════════════════════════════════════════════
+//  TRACKING
+// ══════════════════════════════════════════════════
+async function openTracking(id) {
+  currentSolicitudId = id;
+  showScreen('tracking');
+  document.getElementById('trackingContent').innerHTML = '<div class="loading">Cargando...</div>';
+  document.getElementById('uploadPanel').style.display = 'none';
+  document.getElementById('trackingError').style.display = 'none';
+  try {
+    const [sol, auditlog, docs] = await Promise.all([
+      api('GET', `/solicitudes/${id}`),
+      api('GET', `/auditoria/${id}`),
+      api('GET', `/documentos/${id}`),
+    ]);
+    renderTracking(sol, auditlog, docs);
+  } catch (e) {
+    showErr('trackingError', e.message);
+    document.getElementById('trackingContent').innerHTML = '';
+  }
+}
+
+function renderTracking(sol, auditlog, docs) {
+  document.getElementById('trackingTitle').textContent = `${sol.destino} — ${sol.pais}`;
+  document.getElementById('trackingRef').textContent = `SOL-${String(sol.id).padStart(4,'0')}`;
+  const badge = document.getElementById('trackingBadge');
+  badge.textContent = badgeLabel(sol.estado);
+  badge.className = `badge ${sol.estado}`;
+
+  const niveles = [
+    { key: 1, label: 'Jefe' },
+    { key: 2, label: 'GH' },
+    { key: 3, label: 'Presupuesto' },
+    { key: 4, label: 'Compras' },
+    { key: 5, label: 'Pago' },
+  ];
+  const aprobNiveles = sol.aprobaciones || [];
+  const maxAprobado = Math.max(0, ...aprobNiveles.filter(a => a.estado === 'aprobado').map(a => a.nivel));
+  const rechazado = aprobNiveles.some(a => a.estado === 'rechazado');
+  const nivelActual = rechazado ? -1 : maxAprobado + 1;
+
+  const timelineHtml = niveles.map(n => {
+    let cls = '';
+    if (rechazado && n.key === nivelActual - 1) cls = 'rejected';
+    else if (n.key < nivelActual) cls = 'done';
+    else if (n.key === nivelActual) cls = 'current';
+    const dot = cls === 'done' ? '✓' : cls === 'rejected' ? '✕' : n.key;
+    return `<div class="tl-step ${cls}"><div class="tl-dot">${dot}</div><div class="tl-label">${n.label}</div></div>`;
+  }).join('');
+
+  const auditHtml = auditlog.length ? auditlog.map(a => `
+    <div class="detail-row">
+      <span class="detail-key" style="font-size:11px;">${a.evento}</span>
+      <span class="detail-val" style="font-size:10px;color:var(--text3);">${formatDate(a.timestamp)}</span>
+    </div>
+  `).join('') : '<div style="font-size:12px;color:var(--text2);padding:8px 0;">Sin eventos registrados</div>';
+
+  const docsHtml = docs.length ? docs.map(d => `
+    <div class="doc-file-row">
+      <span>📄</span>
+      <span class="doc-name">${d.nombre_archivo}</span>
+      ${d.ocr_monto_detectado ? `<span class="doc-ocr-badge">OCR $${d.ocr_monto_detectado.toLocaleString('es-CO')}</span>` : ''}
+      ${d.ocr_texto && !d.ocr_monto_detectado ? '<span class="doc-ocr-badge" style="background:#f0f0f8;color:var(--text2);border-color:var(--border);">OCR sin monto</span>' : ''}
+    </div>
+  `).join('') : '<div style="font-size:11px;color:var(--text2);margin-top:6px;">Sin documentos adjuntos</div>';
+
+  document.getElementById('trackingContent').innerHTML = `
+    <div class="detail-panel">
+      <div class="detail-panel-title">Línea de tiempo</div>
+      <div class="timeline">${timelineHtml}</div>
+    </div>
+    <div class="detail-panel">
+      <div class="detail-panel-title">Detalle</div>
+      <div class="detail-row"><span class="detail-key">Destino</span><span class="detail-val navy">${sol.destino}, ${sol.pais}</span></div>
+      <div class="detail-row"><span class="detail-key">Motivo</span><span class="detail-val">${sol.motivo}</span></div>
+      <div class="detail-row"><span class="detail-key">Período</span><span class="detail-val">${sol.fecha_inicio} → ${sol.fecha_fin}</span></div>
+      <div class="detail-row"><span class="detail-key">Monto total</span><span class="detail-val navy">$${sol.monto_total.toLocaleString('es-CO')} COP</span></div>
+      ${sol.anticipo > 0 ? `<div class="detail-row"><span class="detail-key">Anticipo</span><span class="detail-val gold">$${sol.anticipo.toLocaleString('es-CO')} COP</span></div>` : ''}
+      ${sol.centro_costo ? `<div class="detail-row"><span class="detail-key">Centro de costo</span><span class="detail-val">${sol.centro_costo}</span></div>` : ''}
+      <div class="detail-row"><span class="detail-key">Solicitante</span><span class="detail-val">${sol.empleado.nombre}</span></div>
+      <div class="detail-row"><span class="detail-key">Estado</span><span class="detail-val ${sol.estado === 'aprobado' ? 'green' : sol.estado === 'rechazado' ? 'red' : 'gold'}">${badgeLabel(sol.estado)}</span></div>
+    </div>
+    <div class="detail-panel">
+      <div class="detail-panel-title">Documentos adjuntos</div>
+      ${docsHtml}
+    </div>
+    <div class="detail-panel">
+      <div class="detail-panel-title">Audit Log</div>
+      ${auditHtml}
+    </div>
+  `;
+
+  document.getElementById('uploadPanel').style.display = 'block';
+  renderDocumentosUpload(docs);
+}
+
+// ══════════════════════════════════════════════════
+//  DOCUMENT UPLOAD + OCR
+// ══════════════════════════════════════════════════
+function renderDocumentosUpload(docs) {
+  const list = document.getElementById('documentosList');
+  list.innerHTML = docs.map(d => `
+    <div class="attached-file">
+      📄 <span style="flex:1;">${d.nombre_archivo}</span>
+      ${d.ocr_monto_detectado
+        ? `<span style="font-weight:700;color:var(--green);">OCR: $${d.ocr_monto_detectado.toLocaleString('es-CO')}</span>`
+        : d.ocr_texto ? '<span style="color:var(--text2);font-size:10px;">OCR: sin monto</span>' : ''}
+    </div>
+    ${d.ocr_texto ? `<div class="ocr-result" style="font-size:10px;max-height:60px;overflow:hidden;">${d.ocr_texto.substring(0,200)}${d.ocr_texto.length>200?'…':''}</div>` : ''}
+  `).join('');
+}
+
+async function uploadFile() {
+  const input = document.getElementById('fileInput');
+  if (!input.files.length || !currentSolicitudId) return;
+  const file = input.files[0];
+  document.getElementById('uploadLoading').style.display = 'block';
+  const fd = new FormData();
+  fd.append('archivo', file);
+  try {
+    const doc = await apiUpload(`/documentos/${currentSolicitudId}`, fd);
+    input.value = '';
+    document.getElementById('uploadLoading').style.display = 'none';
+    // Refresh tracking
+    openTracking(currentSolicitudId);
+  } catch (e) {
+    document.getElementById('uploadLoading').style.display = 'none';
+    showErr('trackingError', e.message);
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  APPROVAL CONSOLE
+// ══════════════════════════════════════════════════
+let approvalFilter = 'all';
+
+async function loadApproval() {
+  try {
+    allSolicitudes = await api('GET', '/solicitudes');
+    renderApprovalList(allSolicitudes);
+  } catch (e) {
+    showErr('approvalError', e.message);
+  }
+}
+
+function filterApproval(f, el) {
+  approvalFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderApprovalList(allSolicitudes);
+}
+
+function renderApprovalList(list) {
+  let filtered = list;
+  if (approvalFilter !== 'all') {
+    filtered = list.filter(s => s.estado === approvalFilter);
+  }
+  const container = document.getElementById('approvalList');
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">✅</div>No hay solicitudes en este filtro.</div>';
+    return;
+  }
+  container.innerHTML = filtered.map(s => `
+    <div class="approval-card" onclick="openApprovalModal(${s.id}, '${s.empleado.nombre}', ${s.monto_total})">
+      <div class="aprov-header">
+        <div>
+          <div class="aprov-name">${s.empleado.nombre}</div>
+          <div class="aprov-date">SOL-${String(s.id).padStart(4,'0')} · ${s.destino}, ${s.pais}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:14px;font-weight:700;color:var(--navy);">$${s.monto_total.toLocaleString('es-CO')}</div>
+          <div class="badge ${s.estado}">${badgeLabel(s.estado)}</div>
+        </div>
+      </div>
+      <div class="aprov-meta">
+        <span>📅 ${s.fecha_inicio}</span>
+        <span>🌐 ${s.pais}</span>
+        <span>${s.motivo.substring(0,30)}…</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openApprovalModal(id, nombre, monto) {
+  pendingApprovalId = id;
+  document.getElementById('approvalModalSub').textContent =
+    `${nombre} · $${monto.toLocaleString('es-CO')} COP`;
+  document.getElementById('approvalComment').value = '';
+  document.getElementById('approvalModal').classList.add('open');
+}
+
+async function confirmApprove() {
+  if (!pendingApprovalId) return;
+  const comentario = document.getElementById('approvalComment').value.trim();
+  try {
+    const res = await api('POST', '/aprobaciones/aprobar', {
+      solicitud_id: pendingApprovalId,
+      comentario: comentario || null,
+    });
+    closeModal('approvalModal');
+    loadApproval();
+  } catch (e) {
+    closeModal('approvalModal');
+    showErr('approvalError', e.message);
+  }
+}
+
+function openRejectModal() {
+  document.getElementById('rejectComment').value = '';
+  document.getElementById('rejectModal').classList.add('open');
+  document.getElementById('approvalModal').classList.remove('open');
+}
+
+async function confirmReject() {
+  const comentario = document.getElementById('rejectComment').value.trim();
+  if (!comentario) {
+    document.getElementById('rejectComment').style.borderColor = 'var(--red)';
+    return;
+  }
+  try {
+    await api('POST', '/aprobaciones/rechazar', {
+      solicitud_id: pendingApprovalId,
+      comentario,
+    });
+    closeModal('rejectModal');
+    loadApproval();
+  } catch (e) {
+    closeModal('rejectModal');
+    showErr('approvalError', e.message);
+  }
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// ══════════════════════════════════════════════════
+//  SUCCESS / CONFETTI
+// ══════════════════════════════════════════════════
+function spawnConfetti() {
+  const c = document.getElementById('confetti');
+  c.innerHTML = '';
+  const colors = ['#D4AF37','#002D72','#e8c84a','#ffffff','#f0d060'];
+  for (let i = 0; i < 38; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `left:${Math.random()*100}%;top:-10px;background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random()>.5?'50%':'2px'};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;
+      animation-delay:${Math.random()*1.2}s;animation-duration:${2+Math.random()*1.5}s;`;
+    c.appendChild(el);
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════════════
+function formatDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('es-CO', { day:'2-digit', month:'short', year:'numeric' }) +
+    ' ' + d.toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit' });
+}
+
+// Nav tabs click
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => showScreen(tab.dataset.screen));
+});
+
+// Expense table live update
+document.getElementById('expenseBody').addEventListener('input', updateExpenseTotal);
+document.getElementById('fMonto').addEventListener('input', updateExpenseTotal);
+
+// ══════════════════════════════════════════════════
+//  BOOT
+// ══════════════════════════════════════════════════
+if (token && currentUser) {
+  document.getElementById('loginOverlay').style.display = 'none';
+  initApp();
+}
+</script>
+</body>
+</html>

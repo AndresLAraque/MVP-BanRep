@@ -1,0 +1,127 @@
+Debido a el tiempo, es necesario cambiar de plan y dejar low code en una segunda etapa, requiero una version facil y funcional, que pueda probar, y publicar, que no impleque muchas consiguraciones de mi parte:
+Para ello dejo esto como referencia, pero al mismo tiempo adaptable segun lo consideres para implementar el codigo en esta carpeta prototipo con el fin que sea un molulo de pueba que no afecte la propuesta y contexto de las carpetas superiores, pero que tenga en cuenta 
+el fondo, como arquitectura, diagramas y que sea coherente.
+
+Revisa esto y ajustalo a todo el contexto:
+ 🚀 Alternativa moderna (simple y efectiva)
+🎯 Stack recomendado (mínimo viable y potente)
+Frontend: tu HTML (puedes agregar JS luego)
+Backend: FastAPI
+Base de datos: PostgreSQL
+Documentos: MinIO (opcional al inicio)
+Auth: JWT
+Opcional: OCR con Tesseract OCR
+
+👉 Con esto ya puedes cubrir el 90% del caso real.
+
+🧠 🏗️ Arquitectura simple
+HTML → FastAPI → PostgreSQL
+              → (MinIO opcional)
+
+👉 Sin frontend complejo al inicio → avanzas más rápido
+
+🗺️ 🧱 Fases de implementación (seguras y progresivas)
+🟢 FASE 1 — Backend base (core del negocio)
+🎯 Objetivo:
+
+Tener API funcional
+
+🔧 Tareas:
+Crear proyecto FastAPI
+Conectar a PostgreSQL
+Crear modelos:
+Solicitudes
+Usuarios
+Endpoint:
+POST /solicitudes
+GET /solicitudes
+
+👉 Aquí ya tienes sistema básico funcionando
+
+🟡 FASE 2 — Flujo de aprobaciones
+🎯 Objetivo:
+
+Simular el proceso real
+
+🔧 Tareas:
+Tabla Aprobaciones
+Endpoint:
+POST /aprobar
+Lógica:
+Cambiar estado
+Validar rol
+
+👉 Aquí ya tienes lógica de negocio real
+
+🟠 FASE 3 — Integrar tu HTML
+🎯 Objetivo:
+
+Conectar frontend con backend
+
+🔧 Tareas:
+Usar fetch() en JS
+Enviar formulario → API
+Mostrar resultados
+
+👉 Ya tienes demo funcional visible
+
+🔵 FASE 4 — Auditoría (clave para destacar)
+🎯 Objetivo:
+
+Trazabilidad completa
+
+🔧 Tareas:
+Tabla Auditoria
+Registrar eventos:
+creación
+aprobación
+rechazo
+
+👉 Esto te sube mucho el nivel en entrevista
+
+🟣 FASE 5 — Documentos (opcional pero potente)
+🎯 Objetivo:
+
+Subir facturas
+
+🔧 Tareas:
+Endpoint upload
+Guardar en:
+local o MinIO
+🟤 FASE 6 — OCR (solo si tienes tiempo)
+🎯 Objetivo:
+
+Automatización inteligente
+
+🔧 Tareas:
+Integrar Tesseract OCR
+Extraer monto
+
+👉 Bonus fuerte, no obligatorio
+
+⚫ FASE 7 — Seguridad básica
+🎯 Objetivo:
+
+Control de acceso
+
+🔧 Tareas:
+JWT
+Roles:
+Empleado
+Aprobador
+⚡ 🧠 Orden recomendado (importante)
+1. Backend
+2. Base de datos
+3. Endpoints
+4. HTML integración
+5. Aprobaciones
+6. Auditoría
+7. Extras
+🎯 Qué debes tener al final (mínimo ganador)
+
+✔ Crear solicitud
+✔ Aprobar solicitud
+✔ Ver estado
+✔ Auditoría básica
+
+👉 Con eso PASAS el assessment

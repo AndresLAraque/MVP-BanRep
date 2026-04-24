@@ -1,0 +1,1052 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap');
+
+  :root {
+    --navy: #002D72;
+    --navy-light: #003a8c;
+    --navy-dark: #001a44;
+    --gold: #D4AF37;
+    --gold-light: #e8c84a;
+    --gold-pale: rgba(212,175,55,0.12);
+    --bg: #F4F4F4;
+    --white: #ffffff;
+    --text: #1a1a2e;
+    --text2: #5a5a7a;
+    --text3: #9999b3;
+    --border: #e0e0f0;
+    --green: #1a7a4a;
+    --red: #c0392b;
+    --green-bg: #e8f5ef;
+    --red-bg: #fdecea;
+    --amber: #e67e22;
+    --amber-bg: #fef3e2;
+    --font: 'Segoe UI', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: var(--font); background: #e8e8f0; }
+
+  .device-frame {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,45,114,0.18), 0 4px 16px rgba(0,45,114,0.08);
+    min-height: 680px;
+    position: relative;
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    background: var(--navy-dark);
+    border-bottom: 2px solid var(--gold);
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-shrink: 0;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all .2s;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .nav-tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+  .nav-tab:hover:not(.active) { color: rgba(255,255,255,0.8); }
+
+  /* SCREENS */
+  .screen { display: none; flex-direction: column; height: 100%; }
+  .screen.active { display: flex; }
+
+  /* HEADER */
+  .app-header {
+    background: var(--navy);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .header-logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: var(--navy);
+  }
+  .logo-text { color: white; }
+  .logo-text .bank { font-size: 13px; font-weight: 700; letter-spacing: .05em; }
+  .logo-text .sub { font-size: 10px; color: var(--gold); opacity: .9; font-weight: 500; }
+  .header-user {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--gold); color: var(--navy);
+    font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid rgba(212,175,55,0.4);
+  }
+  .user-info .name { font-size: 12px; font-weight: 600; color: white; text-align: right; }
+  .user-info .role { font-size: 10px; color: var(--gold); text-align: right; opacity: .9; }
+
+  /* SCROLL BODY */
+  .screen-body {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--bg);
+    padding: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) transparent;
+  }
+
+  /* STAT CARDS */
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+  .stat-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--navy);
+    transition: transform .15s;
+  }
+  .stat-card:hover { transform: translateY(-2px); }
+  .stat-card.gold { border-top-color: var(--gold); }
+  .stat-card.green { border-top-color: var(--green); }
+  .stat-num { font-size: 26px; font-weight: 700; color: var(--navy); }
+  .stat-card.gold .stat-num { color: var(--amber); }
+  .stat-card.green .stat-num { color: var(--green); }
+  .stat-label { font-size: 10px; color: var(--text2); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .07em; color: var(--text2); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* SOLICITUD CARD */
+  .sol-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    display: flex; gap: 12px; align-items: flex-start;
+    cursor: pointer; transition: box-shadow .2s, border-color .2s;
+  }
+  .sol-card:hover { box-shadow: 0 4px 16px rgba(0,45,114,.1); border-color: rgba(212,175,55,.4); }
+  .sol-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--gold-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+    border: 1.5px solid var(--gold);
+  }
+  .sol-info { flex: 1; }
+  .sol-destino { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .sol-fecha { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .sol-right { text-align: right; flex-shrink: 0; }
+  .sol-monto { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .badge {
+    display: inline-block; padding: 3px 8px; border-radius: 20px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-top: 4px;
+  }
+  .badge.pending { background: var(--gold-pale); color: #8a6d00; border: 1px solid rgba(212,175,55,.4); }
+  .badge.approved { background: var(--green-bg); color: var(--green); border: 1px solid rgba(26,122,74,.2); }
+  .badge.draft { background: #f0f0f8; color: var(--text2); border: 1px solid var(--border); }
+  .badge.paid { background: #e8f0fe; color: var(--navy); border: 1px solid rgba(0,45,114,.2); }
+
+  /* FAB */
+  .fab {
+    position: sticky; bottom: 16px;
+    display: flex; justify-content: flex-end;
+    margin-top: 8px;
+  }
+  .fab-btn {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--navy);
+    border: 3px solid var(--gold);
+    color: white; font-size: 24px; font-weight: 300;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(0,45,114,.35);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .fab-btn:hover { transform: scale(1.08) rotate(90deg); box-shadow: 0 8px 28px rgba(0,45,114,.45); }
+
+  /* FORM STYLES */
+  .form-section {
+    background: var(--white); border-radius: 12px;
+    padding: 16px; margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+  .form-section-title {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--navy); margin-bottom: 14px;
+    padding-bottom: 8px; border-bottom: 2px solid var(--gold);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .field-group { margin-bottom: 12px; }
+  .field-label { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
+  .field-input {
+    width: 100%; padding: 9px 12px; border-radius: 8px;
+    border: 1.5px solid var(--border); background: var(--bg);
+    font-size: 13px; font-family: var(--font); color: var(--text);
+    transition: border-color .15s;
+  }
+  .field-input:focus { outline: none; border-color: var(--navy); background: var(--white); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* TOGGLE */
+  .toggle-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+  }
+  .toggle-label { font-size: 13px; font-weight: 500; color: var(--text); }
+  .toggle-sub { font-size: 11px; color: var(--text2); }
+  .toggle-switch {
+    width: 44px; height: 24px; background: var(--border); border-radius: 12px;
+    position: relative; cursor: pointer; transition: background .2s; flex-shrink: 0;
+  }
+  .toggle-switch.on { background: var(--navy); }
+  .toggle-switch::after {
+    content: ''; position: absolute; width: 18px; height: 18px;
+    border-radius: 50%; background: white; top: 3px; left: 3px;
+    transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,.2);
+  }
+  .toggle-switch.on::after { transform: translateX(20px); }
+
+  /* GRID TABLE */
+  .expense-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .expense-table th {
+    background: var(--navy); color: white; padding: 8px 10px;
+    font-size: 10px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600;
+    text-align: left;
+  }
+  .expense-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+  .expense-table tr:hover td { background: var(--gold-pale); }
+  .expense-total {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px; background: var(--gold-pale);
+    border-radius: 8px; margin-top: 10px;
+    border: 1px solid rgba(212,175,55,.3);
+  }
+  .expense-total .label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text2); }
+  .expense-total .value { font-size: 15px; font-weight: 700; color: var(--navy); }
+
+  /* VALIDATION BAR */
+  .validation-bar {
+    border-radius: 8px; padding: 8px 12px;
+    font-size: 11px; font-weight: 600; margin-top: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .validation-bar.ok { background: var(--green-bg); color: var(--green); }
+  .validation-bar.warn { background: var(--amber-bg); color: var(--amber); }
+
+  /* ATTACH */
+  .attach-zone {
+    border: 2px dashed rgba(0,45,114,.25); border-radius: 10px;
+    padding: 20px; text-align: center; cursor: pointer;
+    transition: border-color .2s, background .2s;
+  }
+  .attach-zone:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .attach-icon { font-size: 28px; margin-bottom: 6px; }
+  .attach-text { font-size: 12px; color: var(--text2); }
+  .attach-text strong { color: var(--navy); }
+  .attached-file {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; background: var(--bg); border-radius: 8px;
+    margin-top: 8px; border: 1px solid var(--border);
+    font-size: 12px; color: var(--text);
+  }
+
+  /* FORM ACTIONS */
+  .form-actions { display: flex; gap: 10px; padding: 14px 16px; background: var(--white); border-top: 1px solid var(--border); flex-shrink: 0; }
+  .btn { padding: 11px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; border: none; transition: all .15s; flex: 1; }
+  .btn-primary { background: var(--navy); color: white; border: 2px solid var(--navy); }
+  .btn-primary:hover { background: var(--navy-light); box-shadow: 0 4px 14px rgba(0,45,114,.35); }
+  .btn-secondary { background: transparent; color: var(--navy); border: 2px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--navy); background: rgba(0,45,114,.04); }
+  .btn-gold { background: var(--gold); color: var(--navy); border: 2px solid var(--gold); font-weight: 700; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-danger { background: var(--red); color: white; border: 2px solid var(--red); }
+  .btn-success { background: var(--green); color: white; border: 2px solid var(--green); }
+
+  /* TRACKING TIMELINE */
+  .timeline { display: flex; align-items: flex-start; gap: 0; margin: 16px 0; overflow-x: auto; padding: 4px 0 12px; }
+  .tl-step {
+    display: flex; flex-direction: column; align-items: center;
+    flex: 1; min-width: 64px; position: relative;
+  }
+  .tl-step::before {
+    content: ''; position: absolute; top: 18px; left: 50%; right: -50%;
+    height: 2px; background: var(--border); z-index: 0;
+  }
+  .tl-step:last-child::before { display: none; }
+  .tl-step.done::before { background: var(--navy); }
+  .tl-step.current::before { background: linear-gradient(90deg, var(--navy) 50%, var(--border) 50%); }
+  .tl-dot {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--border); color: var(--text2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; z-index: 1; position: relative;
+    border: 2px solid var(--border); transition: all .2s;
+  }
+  .tl-step.done .tl-dot { background: var(--navy); color: white; border-color: var(--navy); }
+  .tl-step.current .tl-dot { background: var(--gold); color: var(--navy); border-color: var(--gold); box-shadow: 0 0 0 4px rgba(212,175,55,.2); }
+  .tl-label { font-size: 9px; font-weight: 600; text-align: center; margin-top: 6px; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; }
+  .tl-step.done .tl-label { color: var(--navy); }
+  .tl-step.current .tl-label { color: var(--amber); }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    background: var(--white); border-radius: 12px; padding: 14px;
+    border: 1px solid var(--border); margin-bottom: 12px;
+  }
+  .detail-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-key { color: var(--text2); font-weight: 600; }
+  .detail-val { color: var(--text); font-weight: 500; text-align: right; }
+  .detail-val.gold { color: var(--amber); font-weight: 700; }
+  .detail-val.navy { color: var(--navy); font-weight: 700; }
+
+  /* DOC VIEWER */
+  .doc-viewer {
+    background: #f0f0f8; border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--border); margin-bottom: 12px;
+  }
+  .doc-header {
+    background: var(--navy); padding: 8px 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .doc-header span { color: white; font-size: 11px; font-weight: 600; }
+  .doc-preview { padding: 12px; font-size: 10px; color: var(--text2); line-height: 1.7; }
+  .doc-thumb { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .doc-file {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 10px; font-size: 10px;
+    display: flex; align-items: center; gap: 4px; color: var(--navy);
+    font-weight: 600; cursor: pointer;
+  }
+
+  /* APPROVAL CONSOLE */
+  .filter-bar {
+    display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .filter-chip {
+    padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
+    border: 1.5px solid var(--border); background: var(--white); color: var(--text2);
+    cursor: pointer; transition: all .15s;
+  }
+  .filter-chip.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+  .approval-card {
+    background: var(--white); border-radius: 12px; padding: 14px;
+    margin-bottom: 10px; border: 1px solid var(--border);
+    border-left: 4px solid var(--gold); cursor: pointer;
+    transition: box-shadow .2s;
+  }
+  .approval-card:hover { box-shadow: 0 4px 16px rgba(0,45,114,.1); }
+  .approval-card.selected { border-left-color: var(--navy); background: rgba(0,45,114,.02); }
+  .aprov-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .aprov-name { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .aprov-date { font-size: 10px; color: var(--text3); }
+  .aprov-meta { display: flex; gap: 8px; font-size: 11px; color: var(--text2); flex-wrap: wrap; }
+  .aprov-meta span { display: flex; align-items: center; gap: 3px; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: absolute; inset: 0; background: rgba(0,20,50,.55);
+    z-index: 50; align-items: flex-end; justify-content: center;
+    border-radius: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--white); border-radius: 20px 20px 0 0;
+    padding: 20px 18px; width: 100%;
+    box-shadow: 0 -8px 40px rgba(0,20,50,.15);
+    animation: slideUp .25s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-title {
+    font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 4px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .modal-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; width: 28px; height: 28px;
+    border-radius: 50%; background: var(--border); border: none; cursor: pointer;
+    font-size: 14px; display: flex; align-items: center; justify-content: center;
+    color: var(--text2);
+  }
+
+  /* MASS SELECT */
+  .mass-bar {
+    background: var(--navy); border-radius: 10px; padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .mass-bar span { color: white; font-size: 12px; font-weight: 600; }
+  .mass-bar .btn-gold { padding: 6px 14px; font-size: 12px; flex: 0; border-radius: 8px; }
+
+  /* CHECKBOX */
+  .check-box {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 2px solid var(--border); background: var(--white);
+    cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+  }
+  .check-box.checked { background: var(--navy); border-color: var(--navy); color: white; font-size: 11px; }
+
+  /* SUCCESS SCREEN */
+  .success-screen {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 40px 24px; text-align: center; flex: 1;
+    background: var(--bg);
+  }
+  .success-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--navy); border: 4px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; margin-bottom: 20px;
+    animation: popIn .4s cubic-bezier(.36,.07,.19,.97);
+  }
+  @keyframes popIn { 0% { transform: scale(0); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+  .confetti-container { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .confetti-piece {
+    position: absolute; width: 8px; height: 8px; opacity: 0;
+    animation: confettiFall 2.5s ease-out forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(500px) rotate(720deg); opacity: 0; }
+  }
+
+  /* ERROR BAR */
+  .error-bar {
+    background: var(--navy); padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+    flex-shrink: 0;
+  }
+  .error-bar span { color: var(--gold); font-size: 12px; font-weight: 600; }
+  .error-bar .dismiss { color: var(--gold); font-size: 14px; cursor: pointer; margin-left: auto; }
+
+  /* SCROLLBAR */
+  .screen-body::-webkit-scrollbar { width: 4px; }
+  .screen-body::-webkit-scrollbar-thumb { background: rgba(212,175,55,.4); border-radius: 2px; }
+
+  /* ADD ROW BTN */
+  .add-row { 
+    width: 100%; padding: 8px; border: 1.5px dashed rgba(0,45,114,.3);
+    background: transparent; border-radius: 8px; color: var(--navy);
+    font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 8px;
+    font-family: var(--font); transition: all .15s;
+  }
+  .add-row:hover { border-color: var(--gold); background: var(--gold-pale); }
+</style>
+
+<div style="padding: 16px 0;">
+<div class="device-frame" id="app">
+
+  <!-- NAV TABS -->
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showScreen('dashboard')">📊 Dashboard</div>
+    <div class="nav-tab" onclick="showScreen('form')">📝 Solicitud</div>
+    <div class="nav-tab" onclick="showScreen('tracking')">📍 Tracking</div>
+    <div class="nav-tab" onclick="showScreen('approval')">✅ Aprobación</div>
+    <div class="nav-tab" onclick="showScreen('success')">🎉 Éxito</div>
+  </div>
+
+  <!-- ===================== SCREEN 1: DASHBOARD ===================== -->
+  <div class="screen active" id="screen-dashboard">
+    <div class="app-header">
+      <div class="header-logo">
+        <div class="logo-mark">B</div>
+        <div class="logo-text">
+          <div class="bank">BancoCorp</div>
+          <div class="sub">Sistema de Viáticos</div>
+        </div>
+      </div>
+      <div class="header-user">
+        <div class="user-info">
+          <div class="name">Carlos Mejía</div>
+          <div class="role">Analista GH</div>
+        </div>
+        <div class="avatar">CM</div>
+      </div>
+    </div>
+
+    <div class="screen-body">
+      <div class="stat-grid">
+        <div class="stat-card draft">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Borradores</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-num">3</div>
+          <div class="stat-label">En proceso</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Pagadas</div>
+        </div>
+      </div>
+
+      <div class="section-label">Solicitudes recientes</div>
+
+      <div class="sol-card" onclick="showScreen('tracking')">
+        <div class="sol-icon">✈️</div>
+        <div class="sol-info">
+          <div class="sol-destino">Bogotá D.C. — Colombia</div>
+          <div class="sol-fecha">Viaje: 15–18 Jul 2025 · Benchmarking IA</div>
+        </div>
+        <div class="sol-right">
+          <div class="sol-monto">$2.400.000</div>
+          <div class="badge pending">⏳ Pendiente</div>
+        </div>
+      </div>
+
+      <div class="sol-card" onclick="showScreen('tracking')">
+        <div class="sol-icon">🌎</div>
+        <div class="sol-info">
+          <div class="sol-destino">Ciudad de México — MX</div>
+          <div class="sol-fecha">Viaje: 5–8 Ago 2025 · Conferencia IA</div>
+        </div>
+        <div class="sol-right">
+          <div class="sol-monto">$6.800.000</div>
+          <div class="badge approved">✔ Aprobado</div>
+        </div>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-icon">📋</div>
+        <div class="sol-info">
+          <div class="sol-destino">Medellín — Colombia</div>
+          <div class="sol-fecha">Creado: 10 Jul 2025 · Sin enviar</div>
+        </div>
+        <div class="sol-right">
+          <div class="sol-monto">$980.000</div>
+          <div class="badge draft">Borrador</div>
+        </div>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-icon">💳</div>
+        <div class="sol-info">
+          <div class="sol-destino">Santiago — Chile</div>
+          <div class="sol-fecha">Viaje: 20–22 Jun 2025 · Summit Tech</div>
+        </div>
+        <div class="sol-right">
+          <div class="sol-monto">$8.200.000</div>
+          <div class="badge paid">💳 Pagado</div>
+        </div>
+      </div>
+
+      <div class="fab">
+        <div class="fab-btn" onclick="showScreen('form')" title="Nueva solicitud">+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 2: FORM ===================== -->
+  <div class="screen" id="screen-form">
+    <div class="app-header">
+      <div class="header-logo">
+        <div style="color:white; font-size:18px; cursor:pointer;" onclick="showScreen('dashboard')">←</div>
+        <div class="logo-text" style="margin-left:10px;">
+          <div class="bank">Nueva Solicitud</div>
+          <div class="sub">scr_RequestForm</div>
+        </div>
+      </div>
+      <div class="badge pending" style="margin:0;">Borrador</div>
+    </div>
+
+    <div class="screen-body">
+      <!-- SECCIÓN 1 -->
+      <div class="form-section">
+        <div class="form-section-title">📍 Sección 1 — Datos generales</div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Destino</div>
+            <input class="field-input" type="text" value="Bogotá D.C." />
+          </div>
+          <div class="field-group">
+            <div class="field-label">País</div>
+            <select class="field-input"><option>Colombia</option><option>México</option><option>Chile</option></select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Motivo del viaje</div>
+          <input class="field-input" type="text" value="Benchmarking implementación IA — Bancolombia" />
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Fecha inicio</div>
+            <input class="field-input" type="date" value="2025-07-15" />
+          </div>
+          <div class="field-group">
+            <div class="field-label">Fecha fin</div>
+            <input class="field-input" type="date" value="2025-07-18" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Centro de costo</div>
+          <input class="field-input" type="text" placeholder="🔍 Buscar centro de costo..." value="CC-4201 · Dir. Talento Humano" />
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">¿Requiere anticipo?</div>
+            <div class="toggle-sub">Activa campo de monto anticipo</div>
+          </div>
+          <div class="toggle-switch on" id="toggleAnticipo" onclick="toggleAnticipo()"></div>
+        </div>
+
+        <div id="anticipoField" class="field-group" style="margin-top:12px;">
+          <div class="field-label">Monto anticipo</div>
+          <input class="field-input" type="text" value="$ 1.200.000" />
+        </div>
+      </div>
+
+      <!-- SECCIÓN 2 -->
+      <div class="form-section">
+        <div class="form-section-title">💰 Sección 2 — Desglose de gastos</div>
+        <div style="overflow-x: auto;">
+          <table class="expense-table">
+            <thead>
+              <tr>
+                <th>Categoría</th>
+                <th>Monto</th>
+                <th>Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Hospedaje</td><td>$850.000</td><td>Hotel 3 noches</td></tr>
+              <tr><td>Alimentación</td><td>$480.000</td><td>4 días · $120k/día</td></tr>
+              <tr><td>Transporte</td><td>$620.000</td><td>Tiquetes aéreos</td></tr>
+              <tr><td>Otros</td><td>$150.000</td><td>Materiales</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="add-row">+ Agregar fila</button>
+        <div class="expense-total">
+          <span class="label">Total desglose</span>
+          <span class="value">$2.100.000</span>
+        </div>
+        <div class="validation-bar ok">✔ Desglose ($2.100.000) ≤ Monto estimado ($2.400.000)</div>
+      </div>
+
+      <!-- SECCIÓN 3 -->
+      <div class="form-section">
+        <div class="form-section-title">📎 Sección 3 — Documentación</div>
+        <div class="attach-zone">
+          <div class="attach-icon">📁</div>
+          <div class="attach-text"><strong>Arrastra o toca para adjuntar</strong><br/>PDF · JPG · PNG — Máx. 10 MB</div>
+        </div>
+        <div class="attached-file">📄 invitacion_bancolombia.pdf <span style="margin-left:auto; color:#c0392b; cursor:pointer;">✕</span></div>
+        <div class="attached-file">🖼 agenda_evento.jpg <span style="margin-left:auto; color:#c0392b; cursor:pointer;">✕</span></div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-secondary" onclick="showScreen('dashboard')">Guardar borrador</button>
+      <button class="btn btn-primary" onclick="showScreen('success')">Enviar solicitud →</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 3: TRACKING ===================== -->
+  <div class="screen" id="screen-tracking">
+    <div class="app-header">
+      <div class="header-logo">
+        <div style="color:white; font-size:18px; cursor:pointer;" onclick="showScreen('dashboard')">←</div>
+        <div class="logo-text" style="margin-left:10px;">
+          <div class="bank">Tracking — SOL-2025-047</div>
+          <div class="sub">scr_RequestTracking</div>
+        </div>
+      </div>
+      <div class="badge pending" style="margin:0;">⏳ En aprobación</div>
+    </div>
+
+    <div class="screen-body">
+      <div class="detail-panel" style="margin-bottom: 4px;">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text2); margin-bottom: 10px; letter-spacing:.06em;">Línea de tiempo</div>
+        <div class="timeline">
+          <div class="tl-step done">
+            <div class="tl-dot">✓</div>
+            <div class="tl-label">Jefe</div>
+          </div>
+          <div class="tl-step done">
+            <div class="tl-dot">✓</div>
+            <div class="tl-label">GH</div>
+          </div>
+          <div class="tl-step current">
+            <div class="tl-dot">⏳</div>
+            <div class="tl-label">Presupuesto</div>
+          </div>
+          <div class="tl-step">
+            <div class="tl-dot">4</div>
+            <div class="tl-label">Compras</div>
+          </div>
+          <div class="tl-step">
+            <div class="tl-dot">5</div>
+            <div class="tl-label">Jurídica</div>
+          </div>
+          <div class="tl-step">
+            <div class="tl-dot">✔</div>
+            <div class="tl-label">Pago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-panel">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text2); margin-bottom: 10px; letter-spacing:.06em;">Detalle del flujo</div>
+        <div class="detail-row">
+          <span class="detail-key">Etapa actual</span>
+          <span class="detail-val gold">Revisión Presupuesto</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Aprobador actual</span>
+          <span class="detail-val">Ana Torres — Presupuesto</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Tiempo en espera</span>
+          <span class="detail-val" style="color: var(--amber);">6h 32min / SLA 24h</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Jefe aprobó</span>
+          <span class="detail-val" style="color:var(--green);">✔ 14 Jul 10:45 AM</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">GH aprobó</span>
+          <span class="detail-val" style="color:var(--green);">✔ 14 Jul 03:12 PM</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Destino</span>
+          <span class="detail-val navy">Bogotá D.C.</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Monto aprobado</span>
+          <span class="detail-val navy">$2.400.000 COP</span>
+        </div>
+      </div>
+
+      <div class="doc-viewer">
+        <div class="doc-header">
+          <span>📎 Documentos adjuntos</span>
+        </div>
+        <div class="doc-preview">
+          Documentos vinculados a la solicitud SOL-2025-047
+          <div class="doc-thumb">
+            <div class="doc-file">📄 invitacion_bancolombia.pdf</div>
+            <div class="doc-file">🖼 agenda_evento.jpg</div>
+            <div class="doc-file">📄 resolución_comisión.pdf</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-panel">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text2); margin-bottom: 10px; letter-spacing:.06em;">Audit Log</div>
+        <div class="detail-row">
+          <span class="detail-key" style="font-size:11px;">SOLICITUD_CREADA</span>
+          <span class="detail-val" style="font-size:10px; color:var(--text3);">13 Jul · 9:05 AM</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key" style="font-size:11px;">APROBADO_JEFE</span>
+          <span class="detail-val" style="font-size:10px; color:var(--green);">14 Jul · 10:45 AM</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key" style="font-size:11px;">APROBADO_GH</span>
+          <span class="detail-val" style="font-size:10px; color:var(--green);">14 Jul · 3:12 PM</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key" style="font-size:11px;">EN_REVISION_PRESUPUESTO</span>
+          <span class="detail-val" style="font-size:10px; color:var(--amber);">14 Jul · 3:13 PM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 4: APPROVAL CONSOLE ===================== -->
+  <div class="screen" id="screen-approval">
+    <div class="app-header">
+      <div class="header-logo">
+        <div class="logo-mark">B</div>
+        <div class="logo-text" style="margin-left:10px;">
+          <div class="bank">Consola Aprobación</div>
+          <div class="sub">scr_ApprovalConsole · GH</div>
+        </div>
+      </div>
+      <div class="avatar" style="background: var(--gold); color: var(--navy);">AT</div>
+    </div>
+
+    <div class="error-bar" id="errorBar">
+      <span>⚠ Error de conexión — Reintentando en 30s</span>
+      <span class="dismiss" onclick="document.getElementById('errorBar').style.display='none'">✕</span>
+    </div>
+
+    <div class="screen-body">
+      <div class="filter-bar">
+        <div class="filter-chip active">Todos (5)</div>
+        <div class="filter-chip" onclick="toggleChip(this)">Pendientes (3)</div>
+        <div class="filter-chip" onclick="toggleChip(this)">Hoy</div>
+        <div class="filter-chip" onclick="toggleChip(this)">🔍 Filtrar</div>
+      </div>
+
+      <div class="mass-bar">
+        <span>2 solicitudes seleccionadas</span>
+        <button class="btn btn-gold" onclick="openModal()">Aprobar selección</button>
+      </div>
+
+      <div class="approval-card selected" onclick="this.classList.toggle('selected'); toggleCheck(this)">
+        <div style="display:flex; gap:10px; align-items: flex-start;">
+          <div class="check-box checked" style="margin-top:2px;">✓</div>
+          <div style="flex:1;">
+            <div class="aprov-header">
+              <div>
+                <div class="aprov-name">Carlos Mejía</div>
+                <div class="aprov-date">SOL-2025-047 · Bogotá D.C.</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:14px; font-weight:700; color:var(--navy);">$2.400.000</div>
+                <div class="badge pending" style="font-size:9px;">⏳ Presupuesto</div>
+              </div>
+            </div>
+            <div class="aprov-meta">
+              <span>📅 15–18 Jul</span>
+              <span>⏰ 6h en espera</span>
+              <span>🌐 Nacional</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="approval-card selected" onclick="this.classList.toggle('selected')">
+        <div style="display:flex; gap:10px; align-items: flex-start;">
+          <div class="check-box checked" style="margin-top:2px;">✓</div>
+          <div style="flex:1;">
+            <div class="aprov-header">
+              <div>
+                <div class="aprov-name">Laura Pérez</div>
+                <div class="aprov-date">SOL-2025-044 · São Paulo</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:14px; font-weight:700; color:var(--navy);">$9.100.000</div>
+                <div class="badge pending" style="font-size:9px;">⏳ Presupuesto</div>
+              </div>
+            </div>
+            <div class="aprov-meta">
+              <span>📅 22–26 Jul</span>
+              <span>⏰ 2h en espera</span>
+              <span>🌐 Internacional</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="approval-card" onclick="this.classList.toggle('selected')">
+        <div style="display:flex; gap:10px; align-items: flex-start;">
+          <div class="check-box" style="margin-top:2px;"></div>
+          <div style="flex:1;">
+            <div class="aprov-header">
+              <div>
+                <div class="aprov-name">Andrés Ruiz</div>
+                <div class="aprov-date">SOL-2025-041 · Medellín</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:14px; font-weight:700; color:var(--navy);">$1.200.000</div>
+                <div class="badge draft" style="font-size:9px;">⌛ GH</div>
+              </div>
+            </div>
+            <div class="aprov-meta">
+              <span>📅 28 Jul</span>
+              <span>⏰ 18h en espera</span>
+              <span>🚨 SLA al límite</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL APROBACIÓN MASIVA -->
+    <div class="modal-overlay" id="approvalModal">
+      <div class="modal-box" style="position:relative;">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="modal-title">✅ Confirmar aprobación</div>
+        <div class="modal-sub">Vas a aprobar 2 solicitudes por un total de $11.500.000 COP</div>
+
+        <div style="background: var(--gold-pale); border-radius: 10px; padding: 12px; border: 1px solid rgba(212,175,55,.3); margin-bottom: 14px;">
+          <div class="detail-row" style="border-bottom: 1px solid rgba(212,175,55,.2);">
+            <span class="detail-key">SOL-2025-047 · C. Mejía</span>
+            <span class="detail-val navy">$2.400.000</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">SOL-2025-044 · L. Pérez</span>
+            <span class="detail-val navy">$9.100.000</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Comentario (opcional)</div>
+          <input class="field-input" placeholder="Ej: Revisado y conforme con política..." />
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+          <button class="btn btn-success" onclick="closeModal(); showScreen('dashboard')">Aprobar 2 solicitudes</button>
+        </div>
+
+        <div style="margin-top: 10px; text-align: center;">
+          <button class="btn btn-danger" onclick="openRejectModal()" style="width:100%;">Rechazar — Ingresa motivo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL RECHAZO OBLIGATORIO -->
+    <div class="modal-overlay" id="rejectModal">
+      <div class="modal-box" style="position:relative;">
+        <button class="modal-close" onclick="closeRejectModal()">✕</button>
+        <div class="modal-title" style="color: var(--red);">❌ Rechazar solicitud</div>
+        <div class="modal-sub">El comentario es obligatorio para continuar</div>
+        <div class="field-group">
+          <div class="field-label">Motivo de rechazo *</div>
+          <textarea class="field-input" rows="3" placeholder="Describe el motivo detallado del rechazo..." style="resize:vertical;"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" onclick="closeRejectModal()">Cancelar</button>
+          <button class="btn btn-danger" onclick="closeRejectModal()">Confirmar rechazo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 5: SUCCESS ===================== -->
+  <div class="screen" id="screen-success">
+    <div class="app-header">
+      <div class="header-logo">
+        <div class="logo-mark">B</div>
+        <div class="logo-text" style="margin-left:10px;">
+          <div class="bank">BancoCorp</div>
+          <div class="sub">scr_SubmitSuccess</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="success-screen" style="position:relative;">
+      <div class="confetti-container" id="confetti"></div>
+
+      <div class="success-icon">✓</div>
+      <h2 style="font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 8px;">¡Solicitud enviada!</h2>
+      <p style="font-size: 14px; color: var(--text2); margin-bottom: 6px;">Tu solicitud fue registrada exitosamente</p>
+      <div style="background: var(--gold-pale); border: 1px solid rgba(212,175,55,.4); border-radius: 10px; padding: 12px 20px; margin: 16px 0; text-align: center;">
+        <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: var(--text2); letter-spacing:.06em;">Número de radicado</div>
+        <div style="font-size: 20px; font-weight: 700; color: var(--navy); margin-top: 4px;">SOL-2025-048</div>
+      </div>
+      <p style="font-size: 12px; color: var(--text2); max-width: 280px; line-height: 1.6; margin-bottom: 24px;">
+        Recibirás notificaciones en Microsoft Teams a medida que avance el proceso de aprobación.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px;">
+        <button class="btn btn-primary" onclick="showScreen('tracking')">📍 Ver tracking →</button>
+        <button class="btn btn-secondary" onclick="showScreen('dashboard')">← Volver al Dashboard</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+  const screens = ['dashboard', 'form', 'tracking', 'approval', 'success'];
+
+  function showScreen(id) {
+    screens.forEach(s => {
+      document.getElementById('screen-' + s).classList.remove('active');
+      document.querySelectorAll('.nav-tab').forEach((t, i) => {
+        t.classList.toggle('active', screens[i] === id);
+      });
+    });
+    document.getElementById('screen-' + id).classList.add('active');
+    if (id === 'success') spawnConfetti();
+  }
+
+  function toggleAnticipo() {
+    const sw = document.getElementById('toggleAnticipo');
+    const field = document.getElementById('anticipoField');
+    sw.classList.toggle('on');
+    field.style.display = sw.classList.contains('on') ? 'block' : 'none';
+  }
+
+  function toggleChip(el) {
+    el.classList.toggle('active');
+  }
+
+  function openModal() {
+    document.getElementById('approvalModal').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('approvalModal').classList.remove('open');
+  }
+  function openRejectModal() {
+    document.getElementById('approvalModal').classList.remove('open');
+    document.getElementById('rejectModal').classList.add('open');
+  }
+  function closeRejectModal() {
+    document.getElementById('rejectModal').classList.remove('open');
+  }
+
+  function spawnConfetti() {
+    const c = document.getElementById('confetti');
+    c.innerHTML = '';
+    const colors = ['#D4AF37', '#002D72', '#e8c84a', '#ffffff', '#f0d060'];
+    for (let i = 0; i < 38; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + '%';
+      el.style.top = '-10px';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+      el.style.width = (6 + Math.random() * 8) + 'px';
+      el.style.height = (6 + Math.random() * 8) + 'px';
+      el.style.animationDelay = (Math.random() * 1.2) + 's';
+      el.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+      c.appendChild(el);
+    }
+  }
+
+  function toggleCheck(card) {
+    const box = card.querySelector('.check-box');
+    if (box) box.classList.toggle('checked');
+    if (box && box.classList.contains('checked')) box.textContent = '✓';
+    else if (box) box.textContent = '';
+  }
+</script>
