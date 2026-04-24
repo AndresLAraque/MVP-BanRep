@@ -52,10 +52,10 @@ def on_startup():
         try:
             Base.metadata.create_all(bind=engine)
             break
-        except OperationalError as e:
+        except OperationalError:
             if attempt == 11:
-                logger.error("No se pudo conectar a PostgreSQL tras 60 segundos. Verifica DATABASE_URL.")
-                raise
+                logger.error("No se pudo conectar a PostgreSQL tras 60 segundos. Verifica DATABASE_URL. La app inicia sin DB.")
+                return  # No relanzar — permite que el servidor arranque y responda /health
             logger.warning(f"PostgreSQL no disponible aún, reintentando en 5s... ({attempt + 1}/12)")
             time.sleep(5)
 
@@ -72,6 +72,8 @@ def on_startup():
                     rol=u["rol"],
                 ))
         db.commit()
+    except Exception as e:
+        logger.error(f"Error al crear usuarios demo: {e}")
     finally:
         db.close()
 
