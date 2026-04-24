@@ -1,14 +1,17 @@
 import os
+import time
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import OperationalError
 from database import engine, Base, SessionLocal
 import models
 from auth import hash_password
 from routes import auth, solicitudes, aprobaciones, auditoria, documentos
 
-Base.metadata.create_all(bind=engine)
+logger = logging.getLogger("viaticos")
 
 app = FastAPI(
     title="Sistema de Viáticos — Banco de la República",
@@ -43,7 +46,20 @@ DEMO_USERS = [
 
 
 @app.on_event("startup")
-def seed_demo_users():
+def on_startup():
+    # Espera hasta 60 seg a que PostgreSQL esté listo (Railway puede tardar en iniciar la DB)
+    for attempt in range(12):
+        try:
+            Base.metadata.create_all(bind=engine)
+            break
+        except OperationalError as e:
+            if attempt == 11:
+                logger.error("No se pudo conectar a PostgreSQL tras 60 segundos. Verifica DATABASE_URL.")
+                raise
+            logger.warning(f"PostgreSQL no disponible aún, reintentando en 5s... ({attempt + 1}/12)")
+            time.sleep(5)
+
+    # Seed usuarios demo
     db: Session = SessionLocal()
     try:
         for u in DEMO_USERS:
